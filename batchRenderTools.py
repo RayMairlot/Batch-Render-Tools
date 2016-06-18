@@ -2,15 +2,28 @@ import bpy
 import os
 
 
+bl_info = {
+    "name": "Batch Render Tools",
+    "author": "Ray Mairlot",
+    "version": (0, 5),
+    "blender": (2, 77, 0),
+    "location": "Properties > Render > Batch Render Tools",
+    "description": "A series of tools to help with managing batch renders",
+    "warning": "",
+    "wiki_url": "",
+    "category": "Render",
+    }
+
+
 class batchJobsPropertiesGroup(bpy.types.PropertyGroup):
     
-    start = bpy.props.IntProperty(default=bpy.context.scene.frame_start)
+    start = bpy.props.IntProperty()
     
-    end = bpy.props.IntProperty(default=bpy.context.scene.frame_end)
+    end = bpy.props.IntProperty()
 
     expanded = bpy.props.BoolProperty(default=True)
     
-    filepath = bpy.props.StringProperty(default=bpy.data.filepath, subtype="FILE_PATH")
+    filepath = bpy.props.StringProperty(subtype="FILE_PATH")
     
     frame_range_from_file = bpy.props.BoolProperty(default=False, name="Frame range from file")
     
@@ -113,6 +126,9 @@ def batchJobAdd(context):
     
     newBatchJob = context.scene.batch_jobs.add()
     newBatchJob.name = "Batch Job " + str(len(bpy.context.scene.batch_jobs))
+    newBatchJob.start = bpy.context.scene.frame_start
+    newBatchJob.end = bpy.context.scene.frame_end
+    newBatchJob.filepath = bpy.data.filepath
     
     
     
