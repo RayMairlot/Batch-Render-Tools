@@ -139,6 +139,7 @@ def batchJobRemove(self, context):
     renameAllJobs()
         
         
+        
 def batchJobMove(self, context):
     
     if self.direction == "Up":    
@@ -174,7 +175,15 @@ def renameAllJobs():
         
 def batchJobDeleteAll():
         
-    bpy.context.scene.batch_jobs.clear()                   
+    bpy.context.scene.batch_jobs.clear()    
+    
+    
+    
+def batchJobExpandAll(self, context):
+            
+    for batchJob in context.scene.batch_jobs:
+        
+        batchJob.expanded = self.expand
 
       
 
@@ -186,6 +195,8 @@ class BatchJobsMenu(bpy.types.Menu):
         layout = self.layout
 
         layout.operator("batch_render_tools.delete_all_batch_jobs")
+        layout.operator("batch_render_tools.expand_all_batch_jobs", text="Expand all batch jobs").expand = True
+        layout.operator("batch_render_tools.expand_all_batch_jobs", text="Collapse all batch jobs").expand = False
 
 
 
@@ -366,7 +377,20 @@ class BatchJobDeleteAllOperator(bpy.types.Operator):
         
     def execute(self, context):
         batchJobDeleteAll(self, context)
-        return {'FINISHED'}        
+        return {'FINISHED'}   
+    
+    
+    
+class BatchJobExpandAllOperator(bpy.types.Operator):
+    """Expand/collapse all the batch render jobs"""
+    bl_idname = "batch_render_tools.expand_all_batch_jobs"
+    bl_label = "Delete all batch jobs"
+    
+    expand = bpy.props.BoolProperty()
+        
+    def execute(self, context):
+        batchJobExpandAll(self, context)
+        return {'FINISHED'}            
     
         
              
