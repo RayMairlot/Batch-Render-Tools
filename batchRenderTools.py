@@ -136,11 +136,8 @@ def batchJobRemove(self, context):
     
     context.scene.batch_jobs.remove(self.index)
     
-    for index, batchJob in enumerate(context.scene.batch_jobs):
+    renameAllJobs()
         
-        batchJob.name = "Batch Job "+str(index+1)    
-        
-    
         
 def batchJobMove(self, context):
     
@@ -162,6 +159,16 @@ def batchJobCopy(self, context):
     for property in context.scene.batch_jobs[self.index].items():
         
         newBatchJob[property[0]] = property[1]
+        
+    renameAllJobs()        
+        
+        
+        
+def renameAllJobs():
+        
+    for index, batchJob in enumerate(bpy.context.scene.batch_jobs):
+        
+        batchJob.name = "Batch Job "+str(index+1)            
       
 
 
