@@ -185,7 +185,7 @@ class BatchJobsMenu(bpy.types.Menu):
     def draw(self, context):
         layout = self.layout
 
-        layout.operator("command_prompt.batch_job_delete_all")
+        layout.operator("batch_render_tools.delete_all_batch_jobs")
 
 
 
@@ -201,7 +201,7 @@ class CommandPromptPanel(bpy.types.Panel):
         layout = self.layout
 
         row = layout.row()
-        row.operator("command_prompt.open", icon="CONSOLE")
+        row.operator("batch_render_tools.browse_to_blend", icon="CONSOLE")
         row = layout.row()
         row.prop(context.scene, "copy_blendfile_path", text="Copy path")
         col = row.column()
@@ -212,7 +212,7 @@ class CommandPromptPanel(bpy.types.Panel):
         row.label(text="Batch render:")
         
         row = layout.row()
-        row.operator("command_prompt.batch_render", icon="RENDER_ANIMATION")
+        row.operator("batch_render_tools.run_batch_render", icon="RENDER_ANIMATION")
         
         row = layout.row()
         row.prop(context.scene, "hibernate")
@@ -231,7 +231,7 @@ class CommandPromptPanel(bpy.types.Panel):
         row.label("Number of frames: "+str(frames))
         
         row = layout.row(align=True)
-        row.operator("command_prompt.batch_job_add", icon="ZOOMIN")
+        row.operator("batch_render_tools.add_batch_job", icon="ZOOMIN")
         row.menu(BatchJobsMenu.bl_idname, text="", icon="DOWNARROW_HLT")
         
         for index, batchJob in enumerate(context.scene.batch_jobs):
@@ -250,22 +250,22 @@ class CommandPromptPanel(bpy.types.Panel):
                         
             row = split.row(align=True)
             row.prop(batchJob, "render", text="", icon="RESTRICT_RENDER_OFF")
-            row.operator("command_prompt.batch_job_copy", text="", icon="GHOST").index = index
+            row.operator("batch_render_tools.copy_batch_job", text="", icon="GHOST").index = index
             
             row.separator()
                             
             column = row.column()
             row = column.row(align=True)
-            operator = row.operator("command_prompt.batch_job_move", text="", icon="TRIA_UP")
+            operator = row.operator("batch_render_tools.move_batch_job", text="", icon="TRIA_UP")
             operator.direction = "Up"
             operator.index = index             
-            operator = row.operator("command_prompt.batch_job_move", text="", icon="TRIA_DOWN")
+            operator = row.operator("batch_render_tools.move_batch_job", text="", icon="TRIA_DOWN")
             operator.direction = "Down" 
             operator.index = index
             
             column = row.column()
             row = column.row()
-            row.operator("command_prompt.batch_job_remove", text="", emboss=False, icon="X").index = index
+            row.operator("batch_render_tools.remove_batch_job", text="", emboss=False, icon="X").index = index
             
             if batchJob.expanded:
             
@@ -285,7 +285,7 @@ class CommandPromptPanel(bpy.types.Panel):
 
 class OpenCommandPromptOperator(bpy.types.Operator):
     """Open an empty Command Prompt Window"""
-    bl_idname = "command_prompt.open"
+    bl_idname = "batch_render_tools.browse_to_blend"
     bl_label = "Open Command Prompt"
 
 
@@ -297,7 +297,7 @@ class OpenCommandPromptOperator(bpy.types.Operator):
 
 class BatchRenderOperator(bpy.types.Operator):
     """Run the batch render"""
-    bl_idname = "command_prompt.batch_render"
+    bl_idname = "batch_render_tools.run_batch_render"
     bl_label = "Run batch render"
 
 
@@ -309,7 +309,7 @@ class BatchRenderOperator(bpy.types.Operator):
     
 class BatchJobRemoveOperator(bpy.types.Operator):
     """Add a new batch render job"""
-    bl_idname = "command_prompt.batch_job_add"
+    bl_idname = "batch_render_tools.add_batch_job"
     bl_label = "Add batch render job"
 
 
@@ -321,7 +321,7 @@ class BatchJobRemoveOperator(bpy.types.Operator):
     
 class BatchJobRemoveOperator(bpy.types.Operator):
     """Remove the selected batch render job"""
-    bl_idname = "command_prompt.batch_job_remove"
+    bl_idname = "batch_render_tools.remove_batch_job"
     bl_label = "Remove batch render job"
 
     index = bpy.props.IntProperty()
@@ -334,7 +334,7 @@ class BatchJobRemoveOperator(bpy.types.Operator):
          
 class BatchJobMoveOperator(bpy.types.Operator):
     """Move the selected batch render job up or down"""
-    bl_idname = "command_prompt.batch_job_move"
+    bl_idname = "batch_render_tools.move_batch_job"
     bl_label = "Move batch render job"
 
     index = bpy.props.IntProperty()
@@ -348,7 +348,7 @@ class BatchJobMoveOperator(bpy.types.Operator):
     
 class BatchJobCopyOperator(bpy.types.Operator):
     """Copy the selected batch render"""
-    bl_idname = "command_prompt.batch_job_copy"
+    bl_idname = "batch_render_tools.copy_batch_job"
     bl_label = "Copy the batch render job"
     
     index = bpy.props.IntProperty()
@@ -361,7 +361,7 @@ class BatchJobCopyOperator(bpy.types.Operator):
     
 class BatchJobDeleteAllOperator(bpy.types.Operator):
     """Delete all the batch render jobs"""
-    bl_idname = "command_prompt.batch_job_delete_all"
+    bl_idname = "batch_render_tools.delete_all_batch_jobs"
     bl_label = "Delete all batch jobs"
         
     def execute(self, context):
