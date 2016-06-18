@@ -168,8 +168,25 @@ def renameAllJobs():
         
     for index, batchJob in enumerate(bpy.context.scene.batch_jobs):
         
-        batchJob.name = "Batch Job "+str(index+1)            
+        batchJob.name = "Batch Job "+str(index+1)     
+        
+        
+        
+def batchJobDeleteAll():
+        
+    bpy.context.scene.batch_jobs.clear()                   
+
       
+
+class BatchJobsMenu(bpy.types.Menu):
+    bl_label = "Batch Jobs Menu"
+    bl_idname = "RENDER_MT_batch_jobs"
+
+    def draw(self, context):
+        layout = self.layout
+
+        layout.operator("command_prompt.batch_job_delete_all")
+
 
 
 class CommandPromptPanel(bpy.types.Panel):
@@ -213,8 +230,9 @@ class CommandPromptPanel(bpy.types.Panel):
         row = layout.row()    
         row.label("Number of frames: "+str(frames))
         
-        row = layout.row()
+        row = layout.row(align=True)
         row.operator("command_prompt.batch_job_add", icon="ZOOMIN")
+        row.menu(BatchJobsMenu.bl_idname, text="", icon="DOWNARROW_HLT")
         
         for index, batchJob in enumerate(context.scene.batch_jobs):
             
@@ -337,7 +355,18 @@ class BatchJobCopyOperator(bpy.types.Operator):
     
     def execute(self, context):
         batchJobCopy(self, context)
-        return {'FINISHED'}    
+        return {'FINISHED'}  
+    
+    
+    
+class BatchJobDeleteAllOperator(bpy.types.Operator):
+    """Delete all the batch render jobs"""
+    bl_idname = "command_prompt.batch_job_delete_all"
+    bl_label = "Delete all batch jobs"
+        
+    def execute(self, context):
+        batchJobDeleteAll(self, context)
+        return {'FINISHED'}        
     
         
              
