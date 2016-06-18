@@ -173,7 +173,7 @@ def renameAllJobs():
         
         
         
-def batchJobDeleteAll():
+def batchJobDeleteAll(self, context):
         
     bpy.context.scene.batch_jobs.clear()    
     
