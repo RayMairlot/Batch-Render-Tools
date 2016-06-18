@@ -194,9 +194,9 @@ class BatchJobsMenu(bpy.types.Menu):
     def draw(self, context):
         layout = self.layout
 
-        layout.operator("batch_render_tools.delete_all_batch_jobs")
-        layout.operator("batch_render_tools.expand_all_batch_jobs", text="Expand all batch jobs").expand = True
-        layout.operator("batch_render_tools.expand_all_batch_jobs", text="Collapse all batch jobs").expand = False
+        layout.operator("batch_render_tools.expand_all_batch_jobs", text="Expand all batch jobs", icon="TRIA_DOWN_BAR").expand = True
+        layout.operator("batch_render_tools.expand_all_batch_jobs", text="Collapse all batch jobs", icon="TRIA_UP_BAR").expand = False
+        layout.operator("batch_render_tools.delete_all_batch_jobs", icon="X")
 
 
 
