@@ -151,7 +151,18 @@ def batchJobMove(self, context):
     elif self.direction == "Down":
         
         context.scene.batch_jobs.move(self.index, self.index + 1)
+        
 
+        
+def batchJobCopy(self, context):
+    
+    newBatchJob = context.scene.batch_jobs.add()
+    newBatchJob.name = "Batch Job " + str(len(bpy.context.scene.batch_jobs))
+    
+    for property in context.scene.batch_jobs[self.index].items():
+        
+        newBatchJob[property[0]] = property[1]
+      
 
 
 class CommandPromptPanel(bpy.types.Panel):
@@ -202,7 +213,7 @@ class CommandPromptPanel(bpy.types.Panel):
             
             box = layout.box()
             
-            split = box.split(0.6)
+            split = box.split(0.5)
             
             expandedIcon = "TRIA_RIGHT"
             if batchJob.expanded:
@@ -211,14 +222,13 @@ class CommandPromptPanel(bpy.types.Panel):
             row = split.row()
             row.prop(batchJob, "expanded", text="", emboss=False, icon=expandedIcon)
             row.prop(batchJob, "name", text="", emboss=False)
+                        
+            row = split.row(align=True)
+            row.prop(batchJob, "render", text="", icon="RESTRICT_RENDER_OFF")
+            row.operator("command_prompt.batch_job_copy", text="", icon="GHOST").index = index
             
-            renderIcon = "RESTRICT_RENDER_ON"
-            if batchJob.render:
-                renderIcon = "RESTRICT_RENDER_OFF"
-            
-            row = split.row()
-            row.prop(batchJob, "render", text="", emboss=False, icon=renderIcon)
-            
+            row.separator()
+                            
             column = row.column()
             row = column.row(align=True)
             operator = row.operator("command_prompt.batch_job_move", text="", icon="TRIA_UP")
@@ -247,8 +257,6 @@ class CommandPromptPanel(bpy.types.Panel):
                 row.prop(batchJob, "end")
                         
    
-
-
 
 class OpenCommandPromptOperator(bpy.types.Operator):
     """Open an empty Command Prompt Window"""
@@ -309,10 +317,23 @@ class BatchJobMoveOperator(bpy.types.Operator):
 
     def execute(self, context):
         batchJobMove(self, context)
-        return {'FINISHED'}       
-     
+        return {'FINISHED'}    
+    
+    
+    
+class BatchJobCopyOperator(bpy.types.Operator):
+    """Copy the selected batch render"""
+    bl_idname = "command_prompt.batch_job_copy"
+    bl_label = "Copy the batch render job"
+    
+    index = bpy.props.IntProperty()
+    
+    def execute(self, context):
+        batchJobCopy(self, context)
+        return {'FINISHED'}    
     
         
+             
 def register():
 
     bpy.utils.register_module(__name__)
