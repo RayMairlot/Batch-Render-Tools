@@ -1,5 +1,6 @@
 import bpy
 import os
+from bpy_extras.io_utils import ImportHelper
 
 
 bl_info = {
@@ -122,15 +123,22 @@ def writeBatFile(fileName, fileContent):
 
 
 
-def batchJobAdd(context):
+def batchJobAdd(context, filepath="", blenderFile=""):
     
     newBatchJob = context.scene.batch_jobs.add()
     newBatchJob.name = "Batch Job " + str(len(bpy.context.scene.batch_jobs))
     newBatchJob.start = bpy.context.scene.frame_start
     newBatchJob.end = bpy.context.scene.frame_end
-    newBatchJob.filepath = bpy.data.filepath
     
+    if filepath == "":
     
+        newBatchJob.filepath = bpy.data.filepath
+    
+    else:
+        
+        newBatchJob.filepath = os.path.join(filepath, blenderFile)
+        
+        
     
 def batchJobRemove(self, context):
     
@@ -185,6 +193,50 @@ def batchJobExpandAll(self, context):
         
         batchJob.expanded = self.expand
 
+
+
+def batchJobsFromDirectory(self, context):
+    
+    filepath = self.filepath
+        
+    if os.path.isfile(filepath):
+        
+        filepath = os.path.split(filepath)[0]    
+    
+    
+    blendFiles = [file for file in os.listdir(filepath) if os.path.splitext(file)[1] == ".blend"]
+    
+    for blenderFile in blendFiles:
+        
+        batchJobAdd(context, filepath, blenderFile)
+                        
+
+
+class BatchJobsFromDirectoryOperator(bpy.types.Operator, ImportHelper):
+    bl_idname = "batch_render_tools.batch_jobs_from_directory"
+    bl_label = "Select directory"
+
+
+    filter_glob = bpy.props.StringProperty(default="*.blend",options={'HIDDEN'})
+    
+    filename = bpy.props.StringProperty(default="")
+            
+            
+    def execute(self, context):
+        
+        batchJobsFromDirectory(self, context)
+        
+        return {'FINISHED'}
+    
+    
+    def invoke(self, context, event):
+        
+        self.filename = ""
+        
+        context.window_manager.fileselect_add(self)
+        
+        return {'RUNNING_MODAL'}     
+    
       
 
 class BatchJobsMenu(bpy.types.Menu):
@@ -196,6 +248,7 @@ class BatchJobsMenu(bpy.types.Menu):
 
         layout.operator("batch_render_tools.expand_all_batch_jobs", text="Expand all batch jobs", icon="TRIA_DOWN_BAR").expand = True
         layout.operator("batch_render_tools.expand_all_batch_jobs", text="Collapse all batch jobs", icon="TRIA_UP_BAR").expand = False
+        layout.operator("batch_render_tools.batch_jobs_from_directory", text="Batch jobs from directory", icon="FILESEL")
         layout.operator("batch_render_tools.delete_all_batch_jobs", icon="X")
 
 
