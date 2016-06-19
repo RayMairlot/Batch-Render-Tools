@@ -220,7 +220,7 @@ def batchJobConvertToBatFile(self, context):
     
     command = compileCommand()
     command = 'CALL "' + command
-    fileName = 'batchRender.bat'
+    fileName = self.filepath
     
     commands = []
     commands.append(command)
@@ -256,6 +256,32 @@ class BatchJobsFromDirectoryOperator(bpy.types.Operator, ImportHelper):
     def invoke(self, context, event):
         
         self.filename = ""
+        
+        context.window_manager.fileselect_add(self)
+        
+        return {'RUNNING_MODAL'}
+    
+
+    
+class BatchJobsConvertToBatFileOperator(bpy.types.Operator, ImportHelper):
+    """Convert the batch jobs to a .bat file of commands"""
+    bl_idname = "batch_render_tools.convert_to_bat"
+    bl_label = "Generate .bat file from batch jobs"
+
+
+    filter_glob = bpy.props.StringProperty(default="*.",options={'HIDDEN'})
+        
+        
+    def execute(self, context):
+                        
+        batchJobConvertToBatFile(self, context)
+        
+        return {'FINISHED'}
+    
+    
+    def invoke(self, context, event):
+        
+        self.filename = "batchRender.bat"
         
         context.window_manager.fileselect_add(self)
         
@@ -471,19 +497,7 @@ class BatchJobExpandAllOperator(bpy.types.Operator):
         return {'FINISHED'}   
     
     
-    
-class BatchJobsConvertToBatFileOperator(bpy.types.Operator):
-    """Convert the batch jobs to a .bat file of commands"""
-    bl_idname = "batch_render_tools.convert_to_bat"
-    bl_label = "Generate .bat file from batch jobs"
-    
-        
-    def execute(self, context):
-        batchJobConvertToBatFile(self, context)
-        return {'FINISHED'}                
-    
-        
-             
+                                        
 def register():
 
     bpy.utils.register_module(__name__)
