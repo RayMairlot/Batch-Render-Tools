@@ -147,9 +147,7 @@ def batchJobAdd(self, context, filepath="", blenderFile=""):
 def batchJobRemove(self, context):
     
     context.scene.batch_jobs.remove(self.index)
-    
-    renameAllJobs()
-        
+            
         
         
 def batchJobMove(self, context):
@@ -167,23 +165,14 @@ def batchJobMove(self, context):
 def batchJobCopy(self, context):
     
     newBatchJob = context.scene.batch_jobs.add()
-    newBatchJob.name = "Batch Job " + str(len(bpy.context.scene.batch_jobs))
     
     for property in context.scene.batch_jobs[self.index].items():
         
         newBatchJob[property[0]] = property[1]
         
-    renameAllJobs()        
-        
-        
-        
-def renameAllJobs():
-        
-    for index, batchJob in enumerate(bpy.context.scene.batch_jobs):
-        
-        batchJob.name = "Batch Job "+str(index+1)     
-        
-        
+    newBatchJob.name = "Batch Job " + str(len(bpy.context.scene.batch_jobs))
+            
+             
         
 def batchJobDeleteAll(self, context):
         
@@ -352,25 +341,21 @@ class CommandPromptPanel(bpy.types.Panel):
         for index, batchJob in enumerate(context.scene.batch_jobs):
             
             box = layout.box()
-            
-            split = box.split(0.5)
-            
+                        
             expandedIcon = "TRIA_RIGHT"
             if batchJob.expanded:
                 expandedIcon = "TRIA_DOWN"
-            
-            row = split.row()
+            row = box.row(align=True)
             row.prop(batchJob, "expanded", text="", emboss=False, icon=expandedIcon)
-            row.prop(batchJob, "name", text="", emboss=False)
-                        
-            row = split.row(align=True)
+            row.prop(batchJob, "name", text="")
+            
+            row.separator()
+            
             row.prop(batchJob, "render", text="", icon="RESTRICT_RENDER_OFF")
             row.operator("batch_render_tools.copy_batch_job", text="", icon="GHOST").index = index
             
             row.separator()
                             
-            column = row.column()
-            row = column.row(align=True)
             operator = row.operator("batch_render_tools.move_batch_job", text="", icon="TRIA_UP")
             operator.direction = "Up"
             operator.index = index             
@@ -378,8 +363,8 @@ class CommandPromptPanel(bpy.types.Panel):
             operator.direction = "Down" 
             operator.index = index
             
-            column = row.column()
-            row = column.row()
+            row.separator()
+            
             row.operator("batch_render_tools.remove_batch_job", text="", emboss=False, icon="X").index = index
             
             if batchJob.expanded:
