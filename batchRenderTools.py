@@ -123,7 +123,7 @@ def writeBatFile(fileName, fileContent):
 
 
 
-def batchJobAdd(context, filepath="", blenderFile=""):
+def batchJobAdd(self, context, filepath="", blenderFile=""):
     
     newBatchJob = context.scene.batch_jobs.add()
     newBatchJob.name = "Batch Job " + str(len(bpy.context.scene.batch_jobs))
@@ -137,6 +137,8 @@ def batchJobAdd(context, filepath="", blenderFile=""):
     else:
         
         newBatchJob.filepath = os.path.join(filepath, blenderFile)
+        newBatchJob.frame_range_from_file = self.frame_range_from_file
+        newBatchJob.expanded = self.expanded
         
         
     
@@ -208,18 +210,21 @@ def batchJobsFromDirectory(self, context):
     
     for blenderFile in blendFiles:
         
-        batchJobAdd(context, filepath, blenderFile)
+        batchJobAdd(self, context, filepath, blenderFile)
                         
 
 
 class BatchJobsFromDirectoryOperator(bpy.types.Operator, ImportHelper):
     bl_idname = "batch_render_tools.batch_jobs_from_directory"
-    bl_label = "Select directory"
+    bl_label = "Batch jobs from directory"
 
 
     filter_glob = bpy.props.StringProperty(default="*.blend",options={'HIDDEN'})
     
     filename = bpy.props.StringProperty(default="")
+    
+    frame_range_from_file = bpy.props.BoolProperty(default=False, name="Frame ranges from files") 
+    expanded = bpy.props.BoolProperty(default=True, name="Expanded")
             
             
     def execute(self, context):
@@ -235,8 +240,8 @@ class BatchJobsFromDirectoryOperator(bpy.types.Operator, ImportHelper):
         
         context.window_manager.fileselect_add(self)
         
-        return {'RUNNING_MODAL'}     
-    
+        return {'RUNNING_MODAL'}
+        
       
 
 class BatchJobsMenu(bpy.types.Menu):
@@ -378,7 +383,7 @@ class BatchJobRemoveOperator(bpy.types.Operator):
 
 
     def execute(self, context):
-        batchJobAdd(context)
+        batchJobAdd(self, context)
         return {'FINISHED'}  
 
     
