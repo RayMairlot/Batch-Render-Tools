@@ -83,7 +83,7 @@ def runBatchRender(context):
         command = compileCommand()
         command = 'CALL "' + command
         fileName = 'batchRender.bat'
-        writeBatFile(fileName, command)
+        writeBatFile(fileName, [command, "shutdown -h"])
         print(command)
         os.system('start cmd /k "' + os.path.split(bpy.data.filepath)[0] + '\\' + fileName + '"')
         
@@ -114,11 +114,13 @@ def compileCommand():
 def writeBatFile(fileName, fileContent):
     
     batFile = open(fileName, 'w')
+    
+    for command in fileContent:
             
-    batFile.write(fileContent)
-    batFile.write("\n")
-    batFile.write("\n")
-    batFile.write("shutdown -h")
+        batFile.write(command)
+        batFile.write("\n")
+        batFile.write("\n")
+        
     batFile.close()    
 
 
@@ -219,7 +221,15 @@ def batchJobConvertToBatFile(self, context):
     command = compileCommand()
     command = 'CALL "' + command
     fileName = 'batchRender.bat'
-    writeBatFile(fileName, command)
+    
+    commands = []
+    commands.append(command)
+    
+    if context.scene.hibernate:
+    
+        commands.append("shutdown -h")
+                
+    writeBatFile(fileName, commands)
                         
 
 
