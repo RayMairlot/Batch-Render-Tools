@@ -211,6 +211,15 @@ def batchJobsFromDirectory(self, context):
     for blenderFile in blendFiles:
         
         batchJobAdd(self, context, filepath, blenderFile)
+        
+        
+        
+def batchJobConvertToBatFile(self, context):
+    
+    command = compileCommand()
+    command = 'CALL "' + command
+    fileName = 'batchRender.bat'
+    writeBatFile(fileName, command)
                         
 
 
@@ -253,6 +262,7 @@ class BatchJobsMenu(bpy.types.Menu):
 
         layout.operator("batch_render_tools.expand_all_batch_jobs", text="Expand all batch jobs", icon="TRIA_DOWN_BAR").expand = True
         layout.operator("batch_render_tools.expand_all_batch_jobs", text="Collapse all batch jobs", icon="TRIA_UP_BAR").expand = False
+        layout.operator("batch_render_tools.convert_to_bat", text="Generate .bat file", icon="LINENUMBERS_ON")
         layout.operator("batch_render_tools.batch_jobs_from_directory", text="Batch jobs from directory", icon="FILESEL")
         layout.operator("batch_render_tools.delete_all_batch_jobs", icon="X")
 
@@ -448,7 +458,19 @@ class BatchJobExpandAllOperator(bpy.types.Operator):
         
     def execute(self, context):
         batchJobExpandAll(self, context)
-        return {'FINISHED'}            
+        return {'FINISHED'}   
+    
+    
+    
+class BatchJobsConvertToBatFileOperator(bpy.types.Operator):
+    """Convert the batch jobs to a .bat file of commands"""
+    bl_idname = "batch_render_tools.convert_to_bat"
+    bl_label = "Generate .bat file from batch jobs"
+    
+        
+    def execute(self, context):
+        batchJobConvertToBatFile(self, context)
+        return {'FINISHED'}                
     
         
              
