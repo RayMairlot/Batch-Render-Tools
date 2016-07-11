@@ -68,25 +68,25 @@ def openCommandPrompt(context):
         
 
 def runBatchRender(context):
+                
+    command = compileCommand()    
     
-    if not context.scene.hibernate:
-            
-        command = compileCommand()
-        #Running the command directly requires an extra set of quotes around the command, batch does not
-        command = 'start cmd /k " "' + command + ' "'
-        command.replace('\\','/')
-        print(command)
-        os.system(command)
-                        
-    else:
-                        
-        command = compileCommand()
-        command = 'CALL "' + command
-        fileName = 'batchRender.bat'
-        writeBatFile(fileName, [command, "shutdown -h"])
-        print(command)
-        os.system('start cmd /k "' + os.path.split(bpy.data.filepath)[0] + '\\' + fileName + '"')
-        
+    hibernate = ""
+    if context.scene.hibernate:
+        hibernate = "shutdown -h"
+    
+    #Running the command directly requires an extra set of quotes around the command, batch does not
+    command = 'start cmd /k " "' + command + ' " ' + hibernate
+    command.replace('\\','/')
+    print(command)
+    os.system(command)
+                                          
+#    command = compileCommand()
+#    command = 'CALL "' + command
+#    fileName = 'batchRender.bat'
+#    writeBatFile(fileName, [command, "shutdown -h"])
+#    print(command)
+#    os.system('start cmd /k "' + os.path.split(bpy.data.filepath)[0] + '\\' + fileName + '"')        
         
 
 def compileCommand():
