@@ -18,19 +18,19 @@ bl_info = {
 
 class batchJobsPropertiesGroup(bpy.types.PropertyGroup):
     
-    start = bpy.props.IntProperty()
+    start = bpy.props.IntProperty(description="Frame to start rendering from")
     
-    end = bpy.props.IntProperty()
+    end = bpy.props.IntProperty(description="Frame to render to")
 
     expanded = bpy.props.BoolProperty(default=True)
     
-    filepath = bpy.props.StringProperty(subtype="FILE_PATH")
+    filepath = bpy.props.StringProperty(subtype="FILE_PATH", description="Location of the blend file to render")
     
-    frame_range_from_file = bpy.props.BoolProperty(default=False, name="Frame range from file")
+    frame_range_from_file = bpy.props.BoolProperty(default=False, name="Frame range from file", description="Use the frame range set in the file")
     
-    name = bpy.props.StringProperty()
+    name = bpy.props.StringProperty(description="Name of the render job")
     
-    render = bpy.props.BoolProperty(default=True)
+    render = bpy.props.BoolProperty(default=True, description="Include this job when 'Run batch render' is pressed")
         
 
 
