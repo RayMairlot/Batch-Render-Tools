@@ -43,7 +43,7 @@ bpy.types.Scene.background = bpy.props.BoolProperty(default=True, description="C
 
 bpy.types.Scene.batch_jobs = bpy.props.CollectionProperty(type=batchJobsPropertiesGroup)
 
-bpy.types.Scene.hibernate = bpy.props.BoolProperty(default=False, name="Hibernate", description="Hibernate the computer after rendering")
+bpy.types.Scene.hibernate = bpy.props.BoolProperty(default=False, name="Hibernate", description="Hibernate the computer after rendering (Windows only)")
     
 
 
@@ -72,7 +72,7 @@ def runBatchRender(context):
     command = compileCommand()    
     
     hibernate = ""
-    if context.scene.hibernate:
+    if context.scene.hibernate and str(bpy.app.build_platform) == "b'Windows'":
         hibernate = "shutdown -h"
     
     #Running the command directly requires an extra set of quotes around the command, batch does not
@@ -354,6 +354,7 @@ class CommandPromptPanel(bpy.types.Panel):
         row.operator("batch_render_tools.run_batch_render", icon="RENDER_ANIMATION")
         
         row = layout.row()
+        row.enabled = str(bpy.app.build_platform) == "b'Windows'"
         row.prop(context.scene, "hibernate")
         
         row = layout.row()
