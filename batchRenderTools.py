@@ -24,7 +24,7 @@ class batchJobsPropertiesGroup(bpy.types.PropertyGroup):
 
     expanded = bpy.props.BoolProperty(default=True)
     
-    filepath = bpy.props.StringProperty(subtype="FILE_PATH", description="Location of the blend file to render")
+    filepath = bpy.props.StringProperty(description="Location of the blend file to render")
     
     frame_range_from_file = bpy.props.BoolProperty(default=False, name="Frame range from file", description="Use the frame range set in the file")
     
@@ -202,6 +202,12 @@ def batchJobsFromDirectory(self, context):
     for blenderFile in blendFiles:
         
         batchJobAdd(self, context, filepath, blenderFile)
+    
+        
+        
+def selectBlendFile(self, context):
+            
+    context.scene.batch_jobs[self.index].filepath = self.filepath   
         
         
         
@@ -249,6 +255,32 @@ class BatchJobsFromDirectoryOperator(bpy.types.Operator, ImportHelper):
         context.window_manager.fileselect_add(self)
         
         return {'RUNNING_MODAL'}
+    
+    
+    
+class SelectBlendFileOperator(bpy.types.Operator, ImportHelper):
+    """Select the blend file for this batch job"""
+    bl_idname = "batch_render_tools.select_blend_file"
+    bl_label = "Select blend file"
+
+    index = bpy.props.IntProperty(options={'HIDDEN'})
+
+    filter_glob = bpy.props.StringProperty(default="*.blend",options={'HIDDEN'})
+                       
+    def execute(self, context):
+        
+        selectBlendFile(self, context)
+        
+        return {'FINISHED'}
+    
+    
+    def invoke(self, context, event):
+        
+        #self.filename = ""
+        
+        context.window_manager.fileselect_add(self)
+        
+        return {'RUNNING_MODAL'}    
     
 
     
@@ -369,8 +401,9 @@ class CommandPromptPanel(bpy.types.Panel):
             
             if batchJob.expanded:
             
-                row = box.row()
+                row = box.row(align=True)
                 row.prop(batchJob, "filepath", text="")
+                row.operator("batch_render_tools.select_blend_file", text="", icon="FILESEL").index = index
                 
                 row = box.row()
                 row.prop(batchJob, "frame_range_from_file")
