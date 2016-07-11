@@ -73,20 +73,23 @@ def runBatchRender(context):
     
     hibernate = ""
     if context.scene.hibernate and str(bpy.app.build_platform) == "b'Windows'":
-        hibernate = "shutdown -h"
+        hibernate = " && shutdown -h"
     
     #Running the command directly requires an extra set of quotes around the command, batch does not
-    command = 'start cmd /k " "' + command + ' " ' + hibernate
+    command = 'start cmd /k " "' + command + hibernate + '"'
     command.replace('\\','/')
     print(command)
     os.system(command)
-                                          
+                                              
 #    command = compileCommand()
 #    command = 'CALL "' + command
 #    fileName = 'batchRender.bat'
 #    writeBatchFile(fileName, [command, "shutdown -h"])
 #    print(command)
-#    os.system('start cmd /k "' + os.path.split(bpy.data.filepath)[0] + '\\' + fileName + '"')        
+#    os.system('start cmd /k "' + os.path.split(bpy.data.filepath)[0] + '\\' + fileName + '"') 
+#   
+#    Working hibernate command
+#    command = 'start cmd /k " "' + command + ' && shutdown -h"'       
         
 
 def compileCommand():
