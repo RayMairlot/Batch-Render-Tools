@@ -287,7 +287,7 @@ class SelectBlendFileOperator(bpy.types.Operator, ImportHelper):
     
 class BatchJobsConvertToBatchFileOperator(bpy.types.Operator, ImportHelper):
     """Convert the batch jobs to a Windows Batch (.bat) file"""
-    bl_idname = "batch_render_tools.convert_to_batch"
+    bl_idname = "batch_render_tools.convert_jobs_to_batch_file"
     bl_label = "Generate .bat file from batch jobs"
 
 
@@ -322,7 +322,7 @@ class BatchJobsMenu(bpy.types.Menu):
 
         layout.operator("batch_render_tools.expand_all_batch_jobs", text="Expand all batch jobs", icon="TRIA_DOWN_BAR").expand = True
         layout.operator("batch_render_tools.expand_all_batch_jobs", text="Collapse all batch jobs", icon="TRIA_UP_BAR").expand = False
-        layout.operator("batch_render_tools.convert_to_batch", text="Generate .bat file", icon="LINENUMBERS_ON")
+        layout.operator("batch_render_tools.convert_jobs_to_batch_file", text="Generate .bat file", icon="LINENUMBERS_ON")
         layout.operator("batch_render_tools.batch_jobs_from_directory", text="Batch jobs from directory", icon="FILESEL")
         layout.operator("batch_render_tools.delete_all_batch_jobs", icon="X")
 
