@@ -239,8 +239,7 @@ class BatchJobsFromDirectoryOperator(bpy.types.Operator, ImportHelper):
     filename = bpy.props.StringProperty(default="")
     
     frame_range_from_file = bpy.props.BoolProperty(default=False, name="Frame ranges from files") 
-    expanded = bpy.props.BoolProperty(default=True, name="Expanded")
-            
+                
             
     def execute(self, context):
         
