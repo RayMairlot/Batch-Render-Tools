@@ -229,6 +229,7 @@ def batchJobConvertToBatFile(self, context):
 
 
 class BatchJobsFromDirectoryOperator(bpy.types.Operator, ImportHelper):
+    """Generate batch jobs from a folder of blends you want to render"""    
     bl_idname = "batch_render_tools.batch_jobs_from_directory"
     bl_label = "Batch jobs from directory"
 
