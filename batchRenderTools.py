@@ -291,7 +291,7 @@ class BatchJobsConvertToBatFileOperator(bpy.types.Operator, ImportHelper):
     bl_label = "Generate .bat file from batch jobs"
 
 
-    filter_glob = bpy.props.StringProperty(default="*.",options={'HIDDEN'})
+    filter_glob = bpy.props.StringProperty(default="*.bat",options={'HIDDEN'})
         
         
     def execute(self, context):
