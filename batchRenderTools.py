@@ -84,7 +84,7 @@ def runBatchRender(context):
 #    command = compileCommand()
 #    command = 'CALL "' + command
 #    fileName = 'batchRender.bat'
-#    writeBatFile(fileName, [command, "shutdown -h"])
+#    writeBatchFile(fileName, [command, "shutdown -h"])
 #    print(command)
 #    os.system('start cmd /k "' + os.path.split(bpy.data.filepath)[0] + '\\' + fileName + '"')        
         
@@ -111,7 +111,7 @@ def compileCommand():
 
 
 
-def writeBatFile(fileName, fileContent):
+def writeBatchFile(fileName, fileContent):
     
     batFile = open(fileName, 'w')
     
@@ -211,7 +211,7 @@ def selectBlendFile(self, context):
         
         
         
-def batchJobConvertToBatFile(self, context):
+def batchJobConvertToBatchFile(self, context):
     
     command = compileCommand()
     command = 'CALL "' + command
@@ -224,7 +224,7 @@ def batchJobConvertToBatFile(self, context):
     
         commands.append("shutdown -h")
                 
-    writeBatFile(fileName, commands)
+    writeBatchFile(fileName, commands)
                         
 
 
@@ -285,9 +285,9 @@ class SelectBlendFileOperator(bpy.types.Operator, ImportHelper):
     
 
     
-class BatchJobsConvertToBatFileOperator(bpy.types.Operator, ImportHelper):
-    """Convert the batch jobs to a .bat file of commands"""
-    bl_idname = "batch_render_tools.convert_to_bat"
+class BatchJobsConvertToBatchFileOperator(bpy.types.Operator, ImportHelper):
+    """Convert the batch jobs to a Windows Batch (.bat) file"""
+    bl_idname = "batch_render_tools.convert_to_batch"
     bl_label = "Generate .bat file from batch jobs"
 
 
@@ -298,7 +298,7 @@ class BatchJobsConvertToBatFileOperator(bpy.types.Operator, ImportHelper):
         
     def execute(self, context):
                         
-        batchJobConvertToBatFile(self, context)
+        batchJobConvertToBatchFile(self, context)
         
         return {'FINISHED'}
     
@@ -322,7 +322,7 @@ class BatchJobsMenu(bpy.types.Menu):
 
         layout.operator("batch_render_tools.expand_all_batch_jobs", text="Expand all batch jobs", icon="TRIA_DOWN_BAR").expand = True
         layout.operator("batch_render_tools.expand_all_batch_jobs", text="Collapse all batch jobs", icon="TRIA_UP_BAR").expand = False
-        layout.operator("batch_render_tools.convert_to_bat", text="Generate .bat file", icon="LINENUMBERS_ON")
+        layout.operator("batch_render_tools.convert_to_batch", text="Generate .bat file", icon="LINENUMBERS_ON")
         layout.operator("batch_render_tools.batch_jobs_from_directory", text="Batch jobs from directory", icon="FILESEL")
         layout.operator("batch_render_tools.delete_all_batch_jobs", icon="X")
 
