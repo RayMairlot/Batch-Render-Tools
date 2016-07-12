@@ -51,8 +51,6 @@ class batchJobsPropertiesGroup(bpy.types.PropertyGroup):
     render = bpy.props.BoolProperty(default=True, description="Include this job when 'Run batch render' is pressed")
     
     valid_path = bpy.props.BoolProperty(default=False)
-    
-    index = bpy.props.IntProperty()
         
 
 
@@ -156,7 +154,6 @@ def batchJobAdd(self, context, filepath="", blenderFile=""):
     newBatchJob.name = "Batch Job " + str(len(bpy.context.scene.batch_jobs))
     newBatchJob.start = bpy.context.scene.frame_start
     newBatchJob.end = bpy.context.scene.frame_end
-    newBatchJob.index = len(bpy.context.scene.batch_jobs) - 1
     
     if filepath == "":
     
@@ -184,14 +181,10 @@ def batchJobMove(self, context):
     
     if self.direction == "Up":    
         
-        context.scene.batch_jobs[self.index].index = self.index - 1
-        context.scene.batch_jobs[self.index - 1].index = self.index
         context.scene.batch_jobs.move(self.index, self.index - 1)
 
     elif self.direction == "Down":
-
-        context.scene.batch_jobs[self.index].index = self.index + 1        
-        context.scene.batch_jobs[self.index + 1].index = self.index        
+     
         context.scene.batch_jobs.move(self.index, self.index + 1)
         
 
@@ -205,7 +198,6 @@ def batchJobCopy(self, context):
         newBatchJob[property[0]] = property[1]
         
     newBatchJob.name = "Batch Job " + str(len(bpy.context.scene.batch_jobs))
-    newBatchJob.index = len(bpy.context.scene.batch_jobs) - 1   
             
              
         
