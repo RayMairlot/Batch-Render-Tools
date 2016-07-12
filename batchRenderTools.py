@@ -319,7 +319,7 @@ class CommandPromptPanel(bpy.types.Panel):
         elif len([batchJob for batchJob in context.scene.batch_render_tools.batch_jobs if batchJob.render]) < 1:
             
             row = layout.row()
-            row.label(text="There are no batch jobs set to render", icon="ERROR")
+            row.label(text="There are no batch jobs set to render", icon="INFO")
         
         row = layout.row()
         row.operator("batch_render_tools.run_batch_render", icon="RENDER_ANIMATION")
