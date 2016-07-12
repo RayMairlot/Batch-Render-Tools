@@ -81,7 +81,9 @@ class batchRenderToolsPropertiesGroup(bpy.types.PropertyGroup):
 
     hibernate = bpy.props.BoolProperty(default=False, name="Hibernate", description="Hibernate the computer after rendering (Windows only)")
     
-
+    summary_expanded = bpy.props.BoolProperty(default=True)
+    
+    
 
 ######################FUNCTIONS#################################################################################
 
@@ -336,46 +338,58 @@ class BatchRenderToolsPanel(bpy.types.Panel):
         row.enabled = str(bpy.app.build_platform) == "b'Windows'"
         row.prop(context.scene.batch_render_tools, "hibernate")
         
-        row = layout.row()
-        row.label("Batch Jobs summary:")
+        box = layout.box()
         
-        row = layout.row()
-        row.label("Number of batch jobs: "+str(len(context.scene.batch_render_tools.batch_jobs)))
+        row = box.row()
+        summaryExpandedIcon = "TRIA_RIGHT"
+        if context.scene.batch_render_tools.summary_expanded:
+            summaryExpandedIcon = "TRIA_DOWN"
+        row.prop(context.scene.batch_render_tools, "summary_expanded", text="", icon=summaryExpandedIcon, emboss=False)
+        row.label(text="Batch Jobs summary:")
         
-        row = layout.row()
-        row.label("Number of batch jobs to render: "+str(len([batchJob for batchJob in context.scene.batch_render_tools.batch_jobs if batchJob.render])))
+        if context.scene.batch_render_tools.summary_expanded:
         
-        frames = 0
-        for batchJob in context.scene.batch_render_tools.batch_jobs:
-                            
-            if batchJob.end == batchJob.start:
-                
-                frames += 1
-                
-            else:           
-                
-                frameRange = batchJob.end - batchJob.start
+            row = box.row()
+            row.label("Number of batch jobs: "+str(len(context.scene.batch_render_tools.batch_jobs)), icon="LINENUMBERS_ON")
             
-                if frameRange == context.scene.frame_step:
+            row = box.row()
+            row.label("Number of batch jobs to render: "+str(len([batchJob for batchJob in context.scene.batch_render_tools.batch_jobs if batchJob.render])), icon="SCENE")
+            
+            frames = 0
+            for batchJob in context.scene.batch_render_tools.batch_jobs:
+                                
+                if batchJob.end == batchJob.start:
                     
-                    frames += 2
+                    frames += 1
                     
-                else:
+                else:           
                     
-                    frameRange += 1
-                    
-                    frames += math.ceil(frameRange / context.scene.frame_step)
+                    frameRange = batchJob.end - batchJob.start
+                
+                    if frameRange == context.scene.frame_step:
+                        
+                        frames += 2
+                        
+                    else:
+                        
+                        frameRange += 1
+                        
+                        frames += math.ceil(frameRange / context.scene.frame_step)
+            
+            row = box.row()    
+            row.label("Number of frames: "+str(frames), icon="IMAGE_DATA")
         
-        row = layout.row()    
-        row.label("Number of frames: "+str(frames))
+        row = layout.row()
+        row.label(text="Manage Batch Jobs:")
         
         row = layout.row(align=True)
         row.operator("batch_render_tools.add_batch_job", icon="ZOOMIN")
         row.menu(BatchJobsMenu.bl_idname, text="", icon="DOWNARROW_HLT")
-        
+                
         for index, batchJob in enumerate(context.scene.batch_render_tools.batch_jobs):
             
-            box = layout.box()
+            column = layout.column(align=True)
+            box = column.box()
                         
             expandedIcon = "TRIA_RIGHT"
             if batchJob.expanded:
@@ -401,9 +415,10 @@ class BatchRenderToolsPanel(bpy.types.Panel):
             row.separator()
             
             row.operator("batch_render_tools.remove_batch_job", text="", emboss=False, icon="X").index = index
-            
+                        
             if batchJob.expanded:
-            
+
+                box = column.box()
                 row = box.row(align=True)
                 row.prop(batchJob, "filepath", text="")
                 row.operator("batch_render_tools.select_blend_file", text="", icon="FILESEL").index = index
@@ -420,7 +435,8 @@ class BatchRenderToolsPanel(bpy.types.Panel):
                 
                 row.prop(batchJob, "start")
                 row.prop(batchJob, "end")
-
+            
+            
 
 ###############OPERATORS########################################################################################
 
