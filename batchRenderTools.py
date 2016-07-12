@@ -47,7 +47,7 @@ def calculateFrameEnd(self, context):
         
 
 
-################################################################################################################
+###############PROPERTIES#######################################################################################
 
 
 
@@ -82,6 +82,10 @@ bpy.types.Scene.batch_jobs = bpy.props.CollectionProperty(type=batchJobsProperti
 
 bpy.types.Scene.hibernate = bpy.props.BoolProperty(default=False, name="Hibernate", description="Hibernate the computer after rendering (Windows only)")
     
+
+
+######################FUNCTIONS#################################################################################
+
 
 
 def openCommandPrompt(context):
@@ -264,94 +268,12 @@ def batchJobConvertToBatchFile(self, context):
         commands.append("shutdown -h")
                 
     writeBatchFile(fileName, commands)
+
+
                         
+###############UI###############################################################################################
 
 
-class BatchJobsFromDirectoryOperator(bpy.types.Operator, ImportHelper):
-    """Generate batch jobs from a folder of blends you want to render"""    
-    bl_idname = "batch_render_tools.batch_jobs_from_directory"
-    bl_label = "Batch jobs from directory"
-
-
-    filter_glob = bpy.props.StringProperty(default="*.blend",options={'HIDDEN'})
-    
-    filename = bpy.props.StringProperty(default="")
-    
-    frame_range_from_file = bpy.props.BoolProperty(default=False, name="Frame ranges from files") 
-                
-            
-    def execute(self, context):
-        
-        batchJobsFromDirectory(self, context)
-        
-        return {'FINISHED'}
-    
-    
-    def invoke(self, context, event):
-        
-        self.filename = ""
-        
-        context.window_manager.fileselect_add(self)
-        
-        return {'RUNNING_MODAL'}
-    
-    
-    
-class SelectBlendFileOperator(bpy.types.Operator, ImportHelper):
-    """Select the blend file for this batch job"""
-    bl_idname = "batch_render_tools.select_blend_file"
-    bl_label = "Select blend file"
-
-    index = bpy.props.IntProperty(options={'HIDDEN'})
-
-    filter_glob = bpy.props.StringProperty(default="*.blend",options={'HIDDEN'})
-                       
-    def execute(self, context):
-        
-        selectBlendFile(self, context)
-        
-        return {'FINISHED'}
-    
-    
-    def invoke(self, context, event):
-                
-        context.window_manager.fileselect_add(self)
-        
-        return {'RUNNING_MODAL'}    
-    
-
-    
-class BatchJobsConvertToBatchFileOperator(bpy.types.Operator, ImportHelper):
-    """Convert the batch jobs to a Windows Batch (.bat) file"""
-    bl_idname = "batch_render_tools.convert_jobs_to_batch_file"
-    bl_label = "Generate .bat file from batch jobs"
-
-
-    filename = bpy.props.StringProperty(default="")
-
-    filter_glob = bpy.props.StringProperty(default="*.bat",options={'HIDDEN'})
-    
-    @classmethod
-    def poll(cls, context):
-        return len(bpy.context.scene.batch_jobs) > 0
-        
-        
-    def execute(self, context):
-                        
-        batchJobConvertToBatchFile(self, context)
-        
-        return {'FINISHED'}
-    
-    
-    def invoke(self, context, event):
-        
-        self.filename = "batchRender.bat"
-        
-        context.window_manager.fileselect_add(self)
-        
-        return {'RUNNING_MODAL'}
-        
-      
 
 class BatchJobsMenu(bpy.types.Menu):
     bl_label = "Batch Jobs Menu"
@@ -491,7 +413,96 @@ class CommandPromptPanel(bpy.types.Panel):
                 
                 row.prop(batchJob, "start")
                 row.prop(batchJob, "end")
+
+
+###############OPERATORS########################################################################################
+
                         
+
+class BatchJobsFromDirectoryOperator(bpy.types.Operator, ImportHelper):
+    """Generate batch jobs from a folder of blends you want to render"""    
+    bl_idname = "batch_render_tools.batch_jobs_from_directory"
+    bl_label = "Batch jobs from directory"
+
+
+    filter_glob = bpy.props.StringProperty(default="*.blend",options={'HIDDEN'})
+    
+    filename = bpy.props.StringProperty(default="")
+    
+    frame_range_from_file = bpy.props.BoolProperty(default=False, name="Frame ranges from files") 
+                
+            
+    def execute(self, context):
+        
+        batchJobsFromDirectory(self, context)
+        
+        return {'FINISHED'}
+    
+    
+    def invoke(self, context, event):
+        
+        self.filename = ""
+        
+        context.window_manager.fileselect_add(self)
+        
+        return {'RUNNING_MODAL'}
+    
+    
+    
+class SelectBlendFileOperator(bpy.types.Operator, ImportHelper):
+    """Select the blend file for this batch job"""
+    bl_idname = "batch_render_tools.select_blend_file"
+    bl_label = "Select blend file"
+
+    index = bpy.props.IntProperty(options={'HIDDEN'})
+
+    filter_glob = bpy.props.StringProperty(default="*.blend",options={'HIDDEN'})
+                       
+    def execute(self, context):
+        
+        selectBlendFile(self, context)
+        
+        return {'FINISHED'}
+    
+    
+    def invoke(self, context, event):
+                
+        context.window_manager.fileselect_add(self)
+        
+        return {'RUNNING_MODAL'}    
+    
+
+    
+class BatchJobsConvertToBatchFileOperator(bpy.types.Operator, ImportHelper):
+    """Convert the batch jobs to a Windows Batch (.bat) file"""
+    bl_idname = "batch_render_tools.convert_jobs_to_batch_file"
+    bl_label = "Generate .bat file from batch jobs"
+
+
+    filename = bpy.props.StringProperty(default="")
+
+    filter_glob = bpy.props.StringProperty(default="*.bat",options={'HIDDEN'})
+    
+    @classmethod
+    def poll(cls, context):
+        return len(bpy.context.scene.batch_jobs) > 0
+        
+        
+    def execute(self, context):
+                        
+        batchJobConvertToBatchFile(self, context)
+        
+        return {'FINISHED'}
+    
+    
+    def invoke(self, context, event):
+        
+        self.filename = "batchRender.bat"
+        
+        context.window_manager.fileselect_add(self)
+        
+        return {'RUNNING_MODAL'}
+    
    
 
 class OpenCommandPromptOperator(bpy.types.Operator):
