@@ -1,6 +1,7 @@
 import bpy
 import os
 from bpy_extras.io_utils import ImportHelper
+import math
 
 
 bl_info = {
@@ -126,7 +127,9 @@ def compileCommand():
             
             frameRange = ' -s ' + str(batchJob.start) + ' -e ' + str(batchJob.end)
         
-        command += '"' + batchJob.filepath + '"' + frameRange + ' -a ' 
+        frameStep = ' -j ' + str(bpy.context.scene.frame_step)
+        
+        command += '"' + batchJob.filepath + '"' + frameRange + frameStep + ' -a ' 
 
     return command
 
@@ -404,14 +407,24 @@ class CommandPromptPanel(bpy.types.Panel):
         
         frames = 0
         for batchJob in context.scene.batch_jobs:
-                
+                            
             if batchJob.end == batchJob.start:
                 
                 frames += 1
                 
             else:           
                 
-                frames += batchJob.end - batchJob.start
+                frameRange = batchJob.end - batchJob.start
+            
+                if frameRange == context.scene.frame_step:
+                    
+                    frames += 2
+                    
+                else:
+                    
+                    frameRange += 1
+                    
+                    frames += math.ceil(frameRange / context.scene.frame_step)
         
         row = layout.row()    
         row.label("Number of frames: "+str(frames))
