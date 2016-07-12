@@ -176,7 +176,6 @@ def batchJobAdd(self, context, filepath="", blenderFile=""):
         
         newBatchJob.filepath = os.path.join(filepath, blenderFile)
         newBatchJob.frame_range_from_file = self.frame_range_from_file
-        newBatchJob.expanded = self.expanded
         
         
     
