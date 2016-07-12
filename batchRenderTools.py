@@ -380,6 +380,11 @@ class CommandPromptPanel(bpy.types.Panel):
             
             row = layout.row()
             row.label(text="There are batch jobs with invalid filepaths", icon="ERROR")
+            
+        elif len([batchJob for batchJob in context.scene.batch_jobs if batchJob.render]) < 1:
+            
+            row = layout.row()
+            row.label(text="There are no batch jobs set to render", icon="ERROR")
         
         row = layout.row()
         row.operator("batch_render_tools.run_batch_render", icon="RENDER_ANIMATION")
@@ -478,7 +483,10 @@ class BatchRenderOperator(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
-        return len([batchJob for batchJob in context.scene.batch_jobs if not batchJob.valid_path and batchJob.render]) == 0
+        #There are batch jobs to render
+        #There are no batch jobs to render that have invalid paths
+        return len([batchJob for batchJob in context.scene.batch_jobs if batchJob.render]) > 0 \
+           and len([batchJob for batchJob in context.scene.batch_jobs if not batchJob.valid_path and batchJob.render]) == 0
 
 
     def execute(self, context):
