@@ -404,7 +404,14 @@ class CommandPromptPanel(bpy.types.Panel):
         
         frames = 0
         for batchJob in context.scene.batch_jobs:
-            frames += batchJob.end - batchJob.start
+                
+            if batchJob.end == batchJob.start:
+                
+                frames += 1
+                
+            else:           
+                
+                frames += batchJob.end - batchJob.start
         
         row = layout.row()    
         row.label("Number of frames: "+str(frames))
