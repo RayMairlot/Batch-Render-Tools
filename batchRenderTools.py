@@ -16,6 +16,23 @@ bl_info = {
     }
 
 
+###############UPDATE FUNCTIONS#################################################################################
+
+
+
+def testValidBlend(self, context):
+    
+    self.valid_path = False
+    
+    if os.path.isfile(self.filepath):
+        
+        self.valid_path = True
+                
+
+
+################################################################################################################
+
+
 
 class batchJobsPropertiesGroup(bpy.types.PropertyGroup):
     
@@ -25,7 +42,7 @@ class batchJobsPropertiesGroup(bpy.types.PropertyGroup):
 
     expanded = bpy.props.BoolProperty(default=True)
     
-    filepath = bpy.props.StringProperty(description="Location of the blend file to render")
+    filepath = bpy.props.StringProperty(description="Location of the blend file to render", update=testValidBlend)
     
     frame_range_from_file = bpy.props.BoolProperty(default=False, name="Frame range from file", description="Use the frame range set in the file")
     
@@ -425,6 +442,10 @@ class CommandPromptPanel(bpy.types.Panel):
                 row = box.row(align=True)
                 row.prop(batchJob, "filepath", text="")
                 row.operator("batch_render_tools.select_blend_file", text="", icon="FILESEL").index = index
+                
+                if not batchJob.valid_path:
+                    row = box.row()
+                    row.label(text="Blend file doesn't exist", icon="ERROR")
                 
                 row = box.row()
                 row.prop(batchJob, "frame_range_from_file")
