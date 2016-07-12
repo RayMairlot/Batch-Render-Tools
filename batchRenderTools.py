@@ -376,6 +376,11 @@ class CommandPromptPanel(bpy.types.Panel):
         row = layout.row()
         row.label(text="Batch render:")
         
+        if len([batchJob for batchJob in context.scene.batch_jobs if not batchJob.valid_path and batchJob.render]) > 0:
+            
+            row = layout.row()
+            row.label(text="There are batch jobs with invalid filepaths", icon="ERROR")
+        
         row = layout.row()
         row.operator("batch_render_tools.run_batch_render", icon="RENDER_ANIMATION")
         
