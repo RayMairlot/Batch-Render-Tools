@@ -289,14 +289,14 @@ class BatchJobsMenu(bpy.types.Menu):
 
 
 
-class CommandPromptPanel(bpy.types.Panel):
-    """Creates a Panel in the Object properties window"""
+class CommandPromptToolsPanel(bpy.types.Panel):
+    """Creates a Panel in the render properties window"""
     bl_label = "Command Prompt Tools"
-    bl_idname = "OBJECT_PT_command_prompt_tools"
+    bl_idname = "RENDER_PT_command_prompt_tools"
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
     bl_context = "render"
-
+    
     def draw(self, context):
         layout = self.layout
 
@@ -307,9 +307,22 @@ class CommandPromptPanel(bpy.types.Panel):
         col = row.column()
         col.enabled = context.scene.batch_render_tools.copy_blendfile_path
         col.prop(context.scene.batch_render_tools, "background", text="Background")
+    
+
+
+class BatchRenderToolsPanel(bpy.types.Panel):
+    """Creates a Panel in the render properties window"""
+    bl_label = "Batch Render Tools"
+    bl_idname = "RENDER_PT_batch_render_tools"
+    bl_space_type = 'PROPERTIES'
+    bl_region_type = 'WINDOW'
+    bl_context = "render"
+
+    def draw(self, context):
+        layout = self.layout
         
         row = layout.row()
-        row.label(text="Batch render:")
+        row.operator("batch_render_tools.run_batch_render", icon="RENDER_ANIMATION")
         
         if len([batchJob for batchJob in context.scene.batch_render_tools.batch_jobs if not batchJob.valid_path and batchJob.render]) > 0:
             
@@ -320,9 +333,6 @@ class CommandPromptPanel(bpy.types.Panel):
             
             row = layout.row()
             row.label(text="There are no batch jobs set to render", icon="INFO")
-        
-        row = layout.row()
-        row.operator("batch_render_tools.run_batch_render", icon="RENDER_ANIMATION")
         
         row = layout.row()
         row.enabled = str(bpy.app.build_platform) == "b'Windows'"
