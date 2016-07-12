@@ -389,10 +389,13 @@ class CommandPromptPanel(bpy.types.Panel):
         row.prop(context.scene, "hibernate")
         
         row = layout.row()
-        row.label("Manage Batch Jobs:")
+        row.label("Batch Jobs summary:")
         
         row = layout.row()
         row.label("Number of batch jobs: "+str(len(context.scene.batch_jobs)))
+        
+        row = layout.row()
+        row.label("Number of batch jobs to render: "+str(len([batchJob for batchJob in context.scene.batch_jobs if batchJob.render])))
         
         frames = 0
         for batchJob in context.scene.batch_jobs:
