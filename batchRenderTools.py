@@ -171,11 +171,13 @@ def batchJobAdd(self, context, filepath="", blenderFile=""):
     if filepath == "":
     
         newBatchJob.filepath = bpy.data.filepath
+        newBatchJob.name = "Batch Job " + str(len(context.scene.batch_render_tools.batch_jobs))
     
     else:
         
         newBatchJob.filepath = os.path.join(filepath, blenderFile)
         newBatchJob.frame_range_from_file = self.frame_range_from_file
+        newBatchJob.name = blenderFile
         
         
     
