@@ -254,6 +254,8 @@ def batchJobConvertToBatchFile(self, context):
     command = 'CALL "' + command
     fileName = self.filepath
     
+    print(fileName)
+    
     commands = []
     commands.append(command)
     
@@ -328,6 +330,10 @@ class BatchJobsConvertToBatchFileOperator(bpy.types.Operator, ImportHelper):
     filename = bpy.props.StringProperty(default="")
 
     filter_glob = bpy.props.StringProperty(default="*.bat",options={'HIDDEN'})
+    
+    @classmethod
+    def poll(cls, context):
+        return len(bpy.context.scene.batch_jobs) > 0
         
         
     def execute(self, context):
@@ -576,6 +582,11 @@ class BatchJobDeleteAllOperator(bpy.types.Operator):
     """Delete all the batch render jobs"""
     bl_idname = "batch_render_tools.delete_all_batch_jobs"
     bl_label = "Delete all batch jobs"
+    
+    @classmethod
+    def poll(cls, context):
+        return len(bpy.context.scene.batch_jobs) > 0
+               
         
     def execute(self, context):
         batchJobDeleteAll(self, context)
@@ -589,6 +600,11 @@ class BatchJobExpandAllOperator(bpy.types.Operator):
     bl_label = "Delete all batch jobs"
     
     expand = bpy.props.BoolProperty()
+    
+    @classmethod
+    def poll(cls, context):
+        return len(bpy.context.scene.batch_jobs) > 0
+
         
     def execute(self, context):
         batchJobExpandAll(self, context)
