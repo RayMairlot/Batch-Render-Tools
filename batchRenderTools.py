@@ -95,7 +95,7 @@ def openCommandPrompt(context):
 
     os.system("start cmd /K cd "+binaryPath)
     
-    if context.scene.copy_blendfile_path:
+    if context.scene.batch_render_tools.copy_blendfile_path:
         
         blenderCommand = ""
         
@@ -142,8 +142,6 @@ def compileCommand():
         command += '"' + batchJob.filepath + '"' + frameRange + frameStep + ' -a ' 
 
     return command
-
-    #os.system('start cmd /k "'+binaryPath+'" -b '+blendFilePath+' -s 1 -e 3 -a '+blendFilePath+' -s 10 -e 12 -a')
 
 
 
@@ -656,6 +654,3 @@ def unregister():
 
 if __name__ == "__main__":
     register() 
-    
-    
-#register()   
