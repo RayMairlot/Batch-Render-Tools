@@ -29,6 +29,22 @@ def testValidBlend(self, context):
         
         self.valid_path = True
                 
+                
+                
+def calculateFrameStart(self, context):
+    
+    if self.start > self.end:
+        
+        self.end = self.start
+        
+
+
+def calculateFrameEnd(self, context):
+    
+    if self.end < self.start:
+        
+        self.start = self.end
+        
 
 
 ################################################################################################################
@@ -37,9 +53,9 @@ def testValidBlend(self, context):
 
 class batchJobsPropertiesGroup(bpy.types.PropertyGroup):
     
-    start = bpy.props.IntProperty(description="Frame to start rendering from")
+    start = bpy.props.IntProperty(description="Frame to start rendering from", update=calculateFrameStart)
     
-    end = bpy.props.IntProperty(description="Frame to render to")
+    end = bpy.props.IntProperty(description="Frame to render to", update=calculateFrameEnd)
 
     expanded = bpy.props.BoolProperty(default=True)
     
@@ -101,16 +117,7 @@ def runBatchRender(context):
     command.replace('\\','/')
     print(command)
     os.system(command)
-                                              
-#    command = compileCommand()
-#    command = 'CALL "' + command
-#    fileName = 'batchRender.bat'
-#    writeBatchFile(fileName, [command, "shutdown -h"])
-#    print(command)
-#    os.system('start cmd /k "' + os.path.split(bpy.data.filepath)[0] + '\\' + fileName + '"') 
-#   
-#    Working hibernate command
-#    command = 'start cmd /k " "' + command + ' && shutdown -h"'       
+                                                 
         
 
 def compileCommand():
@@ -305,9 +312,7 @@ class SelectBlendFileOperator(bpy.types.Operator, ImportHelper):
     
     
     def invoke(self, context, event):
-        
-        #self.filename = ""
-        
+                
         context.window_manager.fileselect_add(self)
         
         return {'RUNNING_MODAL'}    
