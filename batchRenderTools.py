@@ -468,6 +468,11 @@ class BatchRenderOperator(bpy.types.Operator):
     bl_label = "Run batch render"
 
 
+    @classmethod
+    def poll(cls, context):
+        return len([batchJob for batchJob in context.scene.batch_jobs if not batchJob.valid_path and batchJob.render]) == 0
+
+
     def execute(self, context):
         runBatchRender(context)
         return {'FINISHED'}
