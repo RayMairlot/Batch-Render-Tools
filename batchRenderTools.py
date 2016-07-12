@@ -71,16 +71,15 @@ class batchJobsPropertiesGroup(bpy.types.PropertyGroup):
         
 
 
-bpy.utils.register_class(batchJobsPropertiesGroup)
+class batchRenderToolsPropertiesGroup(bpy.types.PropertyGroup):
 
+    copy_blendfile_path = bpy.props.BoolProperty(default=True, description="Copy the current blend file's path to the clipboard")
 
-bpy.types.Scene.copy_blendfile_path = bpy.props.BoolProperty(default=True, description="Copy the current blend file's path to the clipboard")
+    background = bpy.props.BoolProperty(default=True, description="Copied path has 'background' (-b) command")
 
-bpy.types.Scene.background = bpy.props.BoolProperty(default=True, description="Copied path has 'background' (-b) command")
+    batch_jobs = bpy.props.CollectionProperty(type=batchJobsPropertiesGroup)
 
-bpy.types.Scene.batch_jobs = bpy.props.CollectionProperty(type=batchJobsPropertiesGroup)
-
-bpy.types.Scene.hibernate = bpy.props.BoolProperty(default=False, name="Hibernate", description="Hibernate the computer after rendering (Windows only)")
+    hibernate = bpy.props.BoolProperty(default=False, name="Hibernate", description="Hibernate the computer after rendering (Windows only)")
     
 
 
@@ -113,7 +112,7 @@ def runBatchRender(context):
     command = compileCommand()    
     
     hibernate = ""
-    if context.scene.hibernate and str(bpy.app.build_platform) == "b'Windows'":
+    if context.scene.batch_tools.hibernate and str(bpy.app.build_platform) == "b'Windows'":
         hibernate = " && shutdown -h"
     
     #Running the command directly requires an extra set of quotes around the command, batch does not
@@ -128,7 +127,7 @@ def compileCommand():
             
     command = bpy.app.binary_path + '" -b '
     
-    batchJobs = [batchJob for batchJob in bpy.context.scene.batch_jobs if batchJob.render]
+    batchJobs = [batchJob for batchJob in bpy.context.scene.batch_render_tools.batch_jobs if batchJob.render]
     
     for batchJob in batchJobs:
         
@@ -164,8 +163,8 @@ def writeBatchFile(fileName, fileContent):
 
 def batchJobAdd(self, context, filepath="", blenderFile=""):
     
-    newBatchJob = context.scene.batch_jobs.add()
-    newBatchJob.name = "Batch Job " + str(len(bpy.context.scene.batch_jobs))
+    newBatchJob = context.scene.batch_render_tools.batch_jobs.add()
+    newBatchJob.name = "Batch Job " + str(len(bpy.context.scene.batch_render_tools.batch_jobs))
     newBatchJob.start = bpy.context.scene.frame_start
     newBatchJob.end = bpy.context.scene.frame_end
     
@@ -183,9 +182,9 @@ def batchJobAdd(self, context, filepath="", blenderFile=""):
     
 def batchJobRemove(self, context):
     
-    context.scene.batch_jobs.remove(self.index)
+    context.scene.batch_render_tools.batch_jobs.remove(self.index)
     
-    for index, batchJob in enumerate(bpy.context.scene.batch_jobs):
+    for index, batchJob in enumerate(bpy.context.scene.batch_render_tools.batch_jobs):
         
         batchJob.index = index
             
@@ -195,35 +194,35 @@ def batchJobMove(self, context):
     
     if self.direction == "Up":    
         
-        context.scene.batch_jobs.move(self.index, self.index - 1)
+        context.scene.batch_render_tools.batch_jobs.move(self.index, self.index - 1)
 
     elif self.direction == "Down":
      
-        context.scene.batch_jobs.move(self.index, self.index + 1)
+        context.scene.batch_render_tools.batch_jobs.move(self.index, self.index + 1)
         
 
         
 def batchJobCopy(self, context):
     
-    newBatchJob = context.scene.batch_jobs.add()
+    newBatchJob = context.scene.batch_render_tools.batch_jobs.add()
     
-    for property in context.scene.batch_jobs[self.index].items():
+    for property in context.scene.batch_render_tools.batch_jobs[self.index].items():
         
         newBatchJob[property[0]] = property[1]
         
-    newBatchJob.name = "Batch Job " + str(len(bpy.context.scene.batch_jobs))
+    newBatchJob.name = "Batch Job " + str(len(bpy.context.scene.batch_render_tools.batch_jobs))
             
              
         
 def batchJobDeleteAll(self, context):
         
-    bpy.context.scene.batch_jobs.clear()    
+    bpy.context.scene.batch_render_tools.batch_jobs.clear()    
     
     
     
 def batchJobExpandAll(self, context):
             
-    for batchJob in context.scene.batch_jobs:
+    for batchJob in context.scene.batch_render_tools.batch_jobs:
         
         batchJob.expanded = self.expand
 
@@ -248,7 +247,7 @@ def batchJobsFromDirectory(self, context):
         
 def selectBlendFile(self, context):
             
-    context.scene.batch_jobs[self.index].filepath = self.filepath  
+    context.scene.batch_render_tools.batch_jobs[self.index].filepath = self.filepath  
         
         
         
@@ -304,20 +303,20 @@ class CommandPromptPanel(bpy.types.Panel):
         row = layout.row()
         row.operator("batch_render_tools.browse_to_blend", icon="CONSOLE")
         row = layout.row()
-        row.prop(context.scene, "copy_blendfile_path", text="Copy path")
+        row.prop(context.scene.batch_render_tools, "copy_blendfile_path", text="Copy path")
         col = row.column()
-        col.enabled = context.scene.copy_blendfile_path
-        col.prop(context.scene, "background", text="Background")
+        col.enabled = context.scene.batch_render_tools.copy_blendfile_path
+        col.prop(context.scene.batch_render_tools, "background", text="Background")
         
         row = layout.row()
         row.label(text="Batch render:")
         
-        if len([batchJob for batchJob in context.scene.batch_jobs if not batchJob.valid_path and batchJob.render]) > 0:
+        if len([batchJob for batchJob in context.scene.batch_render_tools.batch_jobs if not batchJob.valid_path and batchJob.render]) > 0:
             
             row = layout.row()
             row.label(text="There are batch jobs with invalid filepaths", icon="ERROR")
             
-        elif len([batchJob for batchJob in context.scene.batch_jobs if batchJob.render]) < 1:
+        elif len([batchJob for batchJob in context.scene.batch_render_tools.batch_jobs if batchJob.render]) < 1:
             
             row = layout.row()
             row.label(text="There are no batch jobs set to render", icon="ERROR")
@@ -327,19 +326,19 @@ class CommandPromptPanel(bpy.types.Panel):
         
         row = layout.row()
         row.enabled = str(bpy.app.build_platform) == "b'Windows'"
-        row.prop(context.scene, "hibernate")
+        row.prop(context.scene.batch_render_tools, "hibernate")
         
         row = layout.row()
         row.label("Batch Jobs summary:")
         
         row = layout.row()
-        row.label("Number of batch jobs: "+str(len(context.scene.batch_jobs)))
+        row.label("Number of batch jobs: "+str(len(context.scene.batch_render_tools.batch_jobs)))
         
         row = layout.row()
-        row.label("Number of batch jobs to render: "+str(len([batchJob for batchJob in context.scene.batch_jobs if batchJob.render])))
+        row.label("Number of batch jobs to render: "+str(len([batchJob for batchJob in context.scene.batch_render_tools.batch_jobs if batchJob.render])))
         
         frames = 0
-        for batchJob in context.scene.batch_jobs:
+        for batchJob in context.scene.batch_render_tools.batch_jobs:
                             
             if batchJob.end == batchJob.start:
                 
@@ -366,7 +365,7 @@ class CommandPromptPanel(bpy.types.Panel):
         row.operator("batch_render_tools.add_batch_job", icon="ZOOMIN")
         row.menu(BatchJobsMenu.bl_idname, text="", icon="DOWNARROW_HLT")
         
-        for index, batchJob in enumerate(context.scene.batch_jobs):
+        for index, batchJob in enumerate(context.scene.batch_render_tools.batch_jobs):
             
             box = layout.box()
                         
@@ -485,7 +484,7 @@ class BatchJobsConvertToBatchFileOperator(bpy.types.Operator, ImportHelper):
     
     @classmethod
     def poll(cls, context):
-        return len(bpy.context.scene.batch_jobs) > 0
+        return len(bpy.context.scene.batch_render_tools.batch_jobs) > 0
         
         
     def execute(self, context):
@@ -527,8 +526,8 @@ class BatchRenderOperator(bpy.types.Operator):
     def poll(cls, context):
         #There are batch jobs to render
         #There are no batch jobs to render that have invalid paths
-        return len([batchJob for batchJob in context.scene.batch_jobs if batchJob.render]) > 0 \
-           and len([batchJob for batchJob in context.scene.batch_jobs if not batchJob.valid_path and batchJob.render]) == 0
+        return len([batchJob for batchJob in context.scene.batch_render_tools.batch_jobs if batchJob.render]) > 0 \
+           and len([batchJob for batchJob in context.scene.batch_render_tools.batch_jobs if not batchJob.valid_path and batchJob.render]) == 0
 
 
     def execute(self, context):
@@ -596,7 +595,7 @@ class BatchJobDeleteAllOperator(bpy.types.Operator):
     
     @classmethod
     def poll(cls, context):
-        return len(bpy.context.scene.batch_jobs) > 0
+        return len(bpy.context.scene.batch_render_tools.batch_jobs) > 0
                
         
     def execute(self, context):
@@ -614,7 +613,7 @@ class BatchJobExpandAllOperator(bpy.types.Operator):
     
     @classmethod
     def poll(cls, context):
-        return len(bpy.context.scene.batch_jobs) > 0
+        return len(bpy.context.scene.batch_render_tools.batch_jobs) > 0
 
         
     def execute(self, context):
@@ -625,11 +624,21 @@ class BatchJobExpandAllOperator(bpy.types.Operator):
                                         
 def register():
 
+    bpy.utils.register_class(batchJobsPropertiesGroup)
+    bpy.utils.register_class(batchRenderToolsPropertiesGroup)
+    
+    bpy.types.Scene.batch_render_tools = bpy.props.PointerProperty(type=batchRenderToolsPropertiesGroup)
+
     bpy.utils.register_module(__name__)
 
 
 
 def unregister():
+        
+    bpy.utils.unregister_class(batchRenderToolsPropertiesGroup)
+    bpy.utils.unregister_class(batchJobsPropertiesGroup)
+    
+    del bpy.types.Scene.batch_render_tools
     
     bpy.utils.unregister_module(__name__)
 
