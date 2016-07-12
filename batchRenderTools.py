@@ -103,7 +103,7 @@ def openCommandPrompt(context):
             
             blenderCommand = "blender -b "
             
-        bpy.context.window_manager.clipboard = blenderCommand+'"'+bpy.data.filepath+'" '
+        context.window_manager.clipboard = blenderCommand+'"'+bpy.data.filepath+'" '
         
         
 
@@ -164,9 +164,9 @@ def writeBatchFile(fileName, fileContent):
 def batchJobAdd(self, context, filepath="", blenderFile=""):
     
     newBatchJob = context.scene.batch_render_tools.batch_jobs.add()
-    newBatchJob.name = "Batch Job " + str(len(bpy.context.scene.batch_render_tools.batch_jobs))
-    newBatchJob.start = bpy.context.scene.frame_start
-    newBatchJob.end = bpy.context.scene.frame_end
+    newBatchJob.name = "Batch Job " + str(len(context.scene.batch_render_tools.batch_jobs))
+    newBatchJob.start = context.scene.frame_start
+    newBatchJob.end = context.scene.frame_end
     
     if filepath == "":
     
@@ -184,7 +184,7 @@ def batchJobRemove(self, context):
     
     context.scene.batch_render_tools.batch_jobs.remove(self.index)
     
-    for index, batchJob in enumerate(bpy.context.scene.batch_render_tools.batch_jobs):
+    for index, batchJob in enumerate(context.scene.batch_render_tools.batch_jobs):
         
         batchJob.index = index
             
@@ -210,13 +210,13 @@ def batchJobCopy(self, context):
         
         newBatchJob[property[0]] = property[1]
         
-    newBatchJob.name = "Batch Job " + str(len(bpy.context.scene.batch_render_tools.batch_jobs))
+    newBatchJob.name = "Batch Job " + str(len(context.scene.batch_render_tools.batch_jobs))
             
              
         
 def batchJobDeleteAll(self, context):
         
-    bpy.context.scene.batch_render_tools.batch_jobs.clear()    
+    context.scene.batch_render_tools.batch_jobs.clear()    
     
     
     
@@ -484,7 +484,7 @@ class BatchJobsConvertToBatchFileOperator(bpy.types.Operator, ImportHelper):
     
     @classmethod
     def poll(cls, context):
-        return len(bpy.context.scene.batch_render_tools.batch_jobs) > 0
+        return len(context.scene.batch_render_tools.batch_jobs) > 0
         
         
     def execute(self, context):
@@ -595,7 +595,7 @@ class BatchJobDeleteAllOperator(bpy.types.Operator):
     
     @classmethod
     def poll(cls, context):
-        return len(bpy.context.scene.batch_render_tools.batch_jobs) > 0
+        return len(context.scene.batch_render_tools.batch_jobs) > 0
                
         
     def execute(self, context):
@@ -613,7 +613,7 @@ class BatchJobExpandAllOperator(bpy.types.Operator):
     
     @classmethod
     def poll(cls, context):
-        return len(bpy.context.scene.batch_render_tools.batch_jobs) > 0
+        return len(context.scene.batch_render_tools.batch_jobs) > 0
 
         
     def execute(self, context):
