@@ -4,7 +4,7 @@
 
 *Also, while I have used this add-on on very long renders without any problems, please be advised that you use this at your own risk. I suggest doing a short test render before anything big to make sure it works as you expect it to.*
 
----
+## Intro
 
 Batch Render Tools is a series of tools to help doing batch renders of single or multiple files in Blender. Batch render tools can render many different files at once, each with their own frame ranges if desired (otherwise it uses the frame range in the target file). Simply add a batch job and browse to the desired blend file. Re-order the jobs if you want them rendered in a specific order (render happens from top to bottom).
 
