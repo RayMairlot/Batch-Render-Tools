@@ -28,7 +28,7 @@ Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Edito
 
 + **Batch jobs summary**
 
-  A summary of all the batch jobs: Number of batch jobs, Number of batch jobs set to render, Number of total frames that will be rendered
+  A summary of all the batch jobs: Number of batch jobs, Number of batch jobs set to render, Number of total frames that will be rendered.
 
 + **Add batch render job**
 
@@ -96,7 +96,7 @@ Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Edito
 
 + <a name="openCommandPrompt"></a>**Open Command Prompt**
 
-  Opens a command prompt window in the blender installation directory
+  Opens a command prompt window in the blender installation directory.
 
 + <a name="copyPath"></a>**Copy path**
 
@@ -104,4 +104,6 @@ Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Edito
 
 + **Background**
 
-  If '[**Copy path**](#copyPath)' is enabled then the background command (`-b`) will also be copied to the clipboard.
+  If '[**Copy path**](#copyPath)' is enabled then the background option can be enabled which will mean blender's background command (`blender -b`) will also be copied to the clipboard. E.g. with this option enabled you will be able to paste this into the newly opened command prompt:
+  
+  `blender -b "PATHTOBLEND" `
