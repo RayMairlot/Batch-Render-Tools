@@ -114,7 +114,7 @@ def runBatchRender(context):
     command = compileCommand()    
     
     hibernate = ""
-    if context.scene.batch_tools.hibernate and str(bpy.app.build_platform) == "b'Windows'":
+    if context.scene.batch_render_tools.hibernate and str(bpy.app.build_platform) == "b'Windows'":
         hibernate = " && shutdown -h"
     
     #Running the command directly requires an extra set of quotes around the command, batch does not
