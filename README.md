@@ -1,6 +1,10 @@
 # Batch Render Tools
 
-**Note**: Currently Windows only. I am working on getting it working for other OSs. 
+**Note**:
+>+ *Currently Windows only. More info [here](#compatibility).*
+>+ *Also, while I have used this add-on on very long renders without any problems, please be advised that you use this at your own risk. I suggest doing a short test render before anything big to make sure it works as you expect it to.*
+
+---
 
 Batch Render Tools is a series of tools to help doing batch renders of single or multiple files in Blender. Batch render tools can render many different files at once, each with their own frame ranges if desired (otherwise it uses the frame range in the target file). Simply add a batch job and browse to the desired blend file. Re-order the jobs if you want them rendered in a specific order (render happens from top to bottom).
 
@@ -107,3 +111,9 @@ Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Edito
   If '[**Copy path**](#copyPath)' is enabled then the background option can be enabled which will mean blender's background command (`blender -b`) will also be copied to the clipboard. E.g. with this option enabled you will be able to paste this into the newly opened command prompt:
   
   `blender -b "PATHTOBLEND" `
+  
+  ## <a name="compatibility">Compatibility
+  
+  Unfortunately, this add-on is Windows only. I don't like making things for only one OS, but this was more a script I made to help me during a production that I decided to polish and publish, as opposed to an add-on I specifically decided to make for the Blender community. I don't know of a more OS agnostic way of doing things at the moment (I've tried) and I don't have access to the other OSs to make the specific changes each OS would need.
+  
+  I'm currently using `os.system` to open a Command Prompt, which is the Windows specific part. The advantage of opening a command prompt over using something like `subprocess.call` is that it is a) Non-blocking, b) Shows feedback from Blender on the progress of the render, c) Allows the render to be cancelled by simply closing the Command Prompt window and d) Doesn't require Blender to be open during rendering (aside from starting the render). If someone knows of a more generic way to do this that will work for other OSs, I am open to hearing them.
