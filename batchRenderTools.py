@@ -139,7 +139,11 @@ def compileCommand():
             
             frameRange = ' -s ' + str(batchJob.start) + ' -e ' + str(batchJob.end)
         
-        frameStep = ' -j ' + str(bpy.context.scene.frame_step)
+        frameStep = ''
+        
+        if bpy.context.scene.frame_step != 1:
+        
+            frameStep = ' -j ' + str(bpy.context.scene.frame_step)
         
         command += '"' + batchJob.filepath + '"' + frameRange + frameStep + ' -a ' 
 
