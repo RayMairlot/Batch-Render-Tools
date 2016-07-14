@@ -10,7 +10,7 @@ Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Edito
  - Batch Render Tools - The main panel for adding, managing and rendering batch render jobs.
  - Command Prompt Tools - a small panel for quickly opening the command prompt in the Blender installation directory.
 
-## Batch Render Tools Panels
+## Batch Render Tools Panels:
 
 | Batch Render Tools Panel: | Additional Tools Menu: | Command Prompt Tools Panel: |
 | ------------- | ------------- | ------------- |
@@ -28,7 +28,7 @@ Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Edito
 
 + **Batch jobs summary**
 
-  A summary of all the batch jobs: Number of batch jobs, Number of batch jobs set to render, Number of total frames that will be rendered
+  A summary of all the batch jobs: Number of batch jobs, Number of batch jobs set to render, Number of total frames that will be rendered.
 
 + **Add batch render job**
 
@@ -54,7 +54,7 @@ Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Edito
 
   Deletes all the batch render jobs.
 
-###Render Job Options:
+###Batch Job Options:
 
 + **Name**
 
@@ -62,7 +62,7 @@ Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Edito
 
 + **Render**
 
-  Whether or not the batch job will be included in the render.
+  Whether or not the batch job will be included in the render. Means you don't have to delete a job (and lose its settings) if you want to temporarily keep a job from rendering.
 
 + **Copy**
 
@@ -70,7 +70,7 @@ Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Edito
 
 + **Move Up/Down**
 
-  Re-order the batch jobs. Order effects the render order (top to bottom).
+  Re-order the batch jobs. Order affects the render order (top to bottom).
 
 + **Delete**
 
@@ -78,7 +78,7 @@ Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Edito
 
 + <a name="filepath"></a>**Filepath**
 
-  Filepath to the blend to be rendered. By default this is the current blend file (if the blend file is saved, otherwise will be blank and display an error until a valid filepath is supplied).
+  Filepath to the blend to be rendered. By default this will be set to the current blend file (if the blend file is saved, otherwise will be blank and display an error until a valid filepath is supplied).
 
 + <a name="frameRangeFromFile"></a>**Frame range from file**
  
@@ -96,7 +96,7 @@ Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Edito
 
 + <a name="openCommandPrompt"></a>**Open Command Prompt**
 
-  Opens a command prompt window in the blender installation directory
+  Opens a command prompt window in the blender installation directory.
 
 + <a name="copyPath"></a>**Copy path**
 
@@ -104,4 +104,6 @@ Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Edito
 
 + **Background**
 
-  If '[**Copy path**](#copyPath)' is enabled then the background command (`-b`) will also be copied to the clipboard.
+  If '[**Copy path**](#copyPath)' is enabled then the background option can be enabled which will mean blender's background command (`blender -b`) will also be copied to the clipboard. E.g. with this option enabled you will be able to paste this into the newly opened command prompt:
+  
+  `blender -b "PATHTOBLEND" `
