@@ -1,8 +1,10 @@
 # Batch Render Tools
 
+**Note**: Currently Windows only. I am working on getting it working for other OSs. 
+
 Batch Render Tools is a series of tools to help doing batch renders of single or multiple files in Blender. Batch render tools can render many different files at once, each with their own frame ranges if desired (otherwise it uses the frame range in the target file). Simply add a batch job and browse to the desired blend file. Re-order the jobs if you want them rendered in a specific order (render happens from top to bottom).
 
-If you have a folder of blends and want to quickly add them as jobs then you can use '**Batch jobs from directory**' in the '*Additional Tools*' menu (shown below) to browse to a folder and generate the batch jobs. Alternatively, also from the '*Additional Tools*' menu, you can export the batch jobs as a Windows Batch file (.bat) using the '**Generate .bat file**' tool.
+If you have a folder of blends and want to quickly add them as jobs then you can use '**[Batch jobs from directory](#batchJobsFromDirectory)**' in the '*Additional Tools*' menu (shown below) to browse to a folder and generate the batch jobs. Alternatively, also from the '*Additional Tools*' menu, you can export the batch jobs as a Windows Batch file (.bat) using the '**[Generate .bat file](#generateBatFile)**' tool.
 
 Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Editor':
  - Batch Render Tools - The main panel for adding, managing and rendering batch render jobs.
@@ -18,11 +20,11 @@ Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Edito
 
 + **Run batch render**
 
-  Renders all the batch jobs. The button will be disabled if there are no render jobs or if one or more jobs has an invalid filepath.
+  Renders all the batch jobs. The button will be disabled if there are no render jobs or if one or more jobs has an invalid filepath. Blender will not only remain active while rendering, but can be completely closed. To cancel the render close the command prompt window.
 
 + **Hibernate**
 
-  Option to hibernate the computer after batch rendering. (Don't know if you have to explicitly enable this in Windows first)
+  Option to hibernate the computer after batch rendering. (Don't know if you have to explicitly [enable this in Windows first](https://support.microsoft.com/en-gb/kb/920730))
 
 + **Batch jobs summary**
 
@@ -40,11 +42,11 @@ Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Edito
 
   Changes the display mode of all batch jobs to 'collapsed'.
 
-+ **Generate .bat file**
++ <a name="generateBatFile"></a>**Generate .bat file**
 
   Generates a windows Batch file with all the commands necessary to render the batch jobs.
 
-+ **Batch jobs from directory**
++ <a name="batchJobsFromDirectory"></a>**Batch jobs from directory**
 
   Loads a directory of blend files as separate batch jobs.
 
@@ -56,7 +58,7 @@ Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Edito
 
 + **Name**
 
-  Name of the batch job to identify it. Will use the name of the blend file when using '**Batch jobs from directory**'.
+  Name of the batch job to identify it. Will use the name of the blend file when using '**[Batch jobs from directory](#batchJobsFromDirectory)**'.
 
 + **Render**
 
@@ -74,32 +76,32 @@ Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Edito
 
   Delete the batch job.
 
-+ **Filepath**
++ <a name="filepath"></a>**Filepath**
 
   Filepath to the blend to be rendered. By default this is the current blend file (if the blend file is saved, otherwise will be blank and display an error until a valid filepath is supplied).
 
-+ **Frame range from file**
++ <a name="frameRangeFromFile"></a>**Frame range from file**
  
-  Use the frame range set in the target file (specified by '**Filepath**') instead of specifying a custom one.
+  Use the frame range set in the target file (specified by '[**Filepath**](#filepath)') instead of specifying a custom one.
 
 + **Start**
  
-  If '**Frame range from file**' is disabled you can set which frame to start rendering from.
+  If '[**Frame range from file**](#frameRangeFromFile)' is disabled you can set which frame to start rendering from.
 
 + **End**
 
-  If '**Frame range from file**' is disabled you can set which frame to rendering to.
+  If '[**Frame range from file**](#frameRangeFromFile) is disabled you can set which frame to rendering to.
 
 ## Command Prompt Tools Options:
 
-+ **Open Command Prompt**
++ <a name="openCommandPrompt"></a>**Open Command Prompt**
 
   Opens a command prompt window in the blender installation directory
 
-+ **Copy path**
++ <a name="copyPath"></a>**Copy path**
 
-  When '**Open Comamnd Prompt**' is clicked the path to the current blend file will be copied to the clipboard.
+  When '[**Open Command Prompt**](#openCommandPrompt)' is clicked the path to the current blend file will be copied to the clipboard.
 
 + **Background**
 
-  If '**Copy path**' is enabled then the background command (`-b`) will also be copied to the clipboard.
+  If '[**Copy path**](#copyPath)' is enabled then the background command (`-b`) will also be copied to the clipboard.
