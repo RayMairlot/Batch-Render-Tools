@@ -8,6 +8,7 @@ Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Edito
 
 # Batch Render Tools Panels
 
-| Batch Render Tools Panel:  | Command Prompt Tools Panel: |
-| ------------- | ------------- |
-| ![Batch Render Tools Panel](/Batch Render Tools README images/batchRenderTools Main.PNG) | ![Command Prompt Tools Panel](/Batch Render Tools README images/batchRenderTools Command Prompt Tools.PNG) 
+| Batch Render Tools Panel: | Additional Tools Menu: | Command Prompt Tools Panel: |
+| ------------- | ------------- | ------------- |
+| ![Batch Render Tools Panel](/batchRenderTools README images/batchRenderTools Main.png) | ![Additional Tools Menu](/batchRenderTools README images/batchRenderTools Additional Tools.png) | ![Command Prompt Tools Panel](/batchRenderTools README images/batchRenderTools Command Prompt Tools.png) 
+
