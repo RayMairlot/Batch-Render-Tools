@@ -101,7 +101,7 @@ def openCommandPrompt(context):
         
         blenderCommand = ""
         
-        if context.scene.background:
+        if context.scene.batch_render_tools.background:
             
             blenderCommand = "blender -b "
             
