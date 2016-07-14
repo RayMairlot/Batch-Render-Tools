@@ -263,7 +263,7 @@ def batchJobConvertToBatchFile(self, context):
     commands = []
     commands.append(command)
     
-    if context.scene.hibernate:
+    if context.scene.batch_render_tools.hibernate:
     
         commands.append("shutdown -h")
                 
