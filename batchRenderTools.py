@@ -308,6 +308,7 @@ class CommandPromptToolsPanel(bpy.types.Panel):
         row = layout.row()
         row.operator("batch_render_tools.browse_to_blend", icon="CONSOLE")
         row = layout.row()
+        row.enabled = bpy.data.filepath != ""
         row.prop(context.scene.batch_render_tools, "copy_blendfile_path", text="Copy path")
         col = row.column()
         col.enabled = context.scene.batch_render_tools.copy_blendfile_path
