@@ -6,7 +6,7 @@
 
 ## Intro:
 
-Batch Render Tools is a series of tools to help doing batch renders of single or multiple files in Blender. Batch render tools can render many different files at once, each with their own frame ranges if desired (otherwise it uses the frame range in the target file). Simply add a batch job and browse to the desired blend file. Re-order the jobs if you want them rendered in a specific order (render happens from top to bottom).
+Batch Render Tools is a series of tools to help doing batch renders of single or multiple files in Blender. Batch render tools can render many different files at once, each with their own frame ranges if desired (otherwise it uses the frame range in the target file). Simply add a batch job and browse to the desired blend file, re-order the jobs if you want them rendered in a specific order (render happens from top to bottom) and then press 'Run batch render'. If you want, Blender can now be closed and the render will continue until either it is finished or the Command Prompt Window (which opens when rendering is started) is closed.
 
 If you have a folder of blends and want to quickly add them as jobs then you can use '**[Batch jobs from directory](#batchJobsFromDirectory)**' in the '*Additional Tools*' menu (shown below) to browse to a folder and generate the batch jobs. Alternatively, also from the '*Additional Tools*' menu, you can export the batch jobs as a Windows Batch file (.bat) using the '**[Generate .bat file](#generateBatFile)**' tool.
 
