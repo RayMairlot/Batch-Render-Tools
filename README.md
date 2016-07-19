@@ -125,11 +125,11 @@ command = 'xterm -e ' + bpy.app.binary_path + ' -b ' + PathToBlend + ' -a'
 os.system(command)
 ```
 
-But, what I can't seem to do is work out how to get it to work on Mac OSX. I thought this would work:
+But, what I can't seem to do is work out how to get it to work on Mac OSX. This works:
 
 ```
-command = 'open -a /Applications/Utilities/Terminal.app ' + bpy.app.binary_path + ' --args -b PathToBlend -a'
+command = 'open -a /Applications/Utilities/Terminal.app ' + bpy.app.binary_path + '
 os.system(command)
 ```
 
-I thought this would open the Terminal program, run Blender and then pass the arguments after `--args` to Blender, but the `--args` are always ignored. If anyone knows where I'm going wrong, please let me know.
+It opens a Terminal and runs blender, but I don't know how to pass additional arguments to Blender. If anyone knows how to do that, please let me know.
