@@ -128,7 +128,7 @@ os.system(command)
 But, what I can't seem to do is work out how to get it to work on Mac OSX. This works:
 
 ```
-command = 'open -a /Applications/Utilities/Terminal.app ' + bpy.app.binary_path + '
+command = 'open -a /Applications/Utilities/Terminal.app ' + bpy.app.binary_path'
 os.system(command)
 ```
 
