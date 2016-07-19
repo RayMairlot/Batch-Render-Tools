@@ -132,4 +132,4 @@ command = 'open -a /Applications/Utilities/Terminal.app ' + bpy.app.binary_path'
 os.system(command)
 ```
 
-It opens a Terminal and runs blender, but I don't know how to pass additional arguments to Blender. If anyone knows how to do that, please let me know.
+It opens a Terminal and runs Blender, but I don't know how to pass additional arguments to Blender. If anyone knows how to do that, please let me know.
