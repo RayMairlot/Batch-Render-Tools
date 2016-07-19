@@ -128,7 +128,7 @@ os.system(command)
 But, what I can't seem to do is work out how to get it to work on Mac OSX. I thought this would work:
 
 ```
-command = 'open -a /Applications/Utilities/Terminal.app ' + bpy.app.binary_path + ' --args PathToBlend'
+command = 'open -a /Applications/Utilities/Terminal.app ' + bpy.app.binary_path + ' --args -b PathToBlend -a'
 os.system(command)
 ```
 
