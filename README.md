@@ -114,6 +114,22 @@ Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Edito
   
 ## <a name="compatibility">Compatibility
   
-Unfortunately, this add-on is Windows only. I don't like making things for only one OS, but this was more a script I made to help me during a production that I decided to polish and publish, as opposed to an add-on I specifically decided to make for the Blender community. I don't know of a more OS agnostic way of doing things at the moment (I've tried) and I don't have access to the other OSs to make the specific changes each OS would need.
+Unfortunately, this add-on is Windows only. I don't like making things for only one OS, but this was more a script I made to help me during a production that I decided to polish and publish, as opposed to an add-on I specifically decided to make for the Blender community.
   
-I'm currently using `os.system` to open a Command Prompt, which is the Windows specific part. The advantage of opening a command prompt over using something like `subprocess.call` is that it is a) Non-blocking, b) Shows feedback from Blender on the progress of the render, c) Allows the render to be cancelled by simply closing the Command Prompt window and d) Doesn't require Blender to be open during rendering (aside from starting the render). If someone knows of a more generic way to do this that will work for other OSs, I am open to hearing them.
+I'm currently using `os.system` to open a Command Prompt, which is the Windows specific part. The advantage of opening a command prompt over using something like `subprocess.call` is that it is a) Non-blocking, b) Shows feedback from Blender on the progress of the render, c) Allows the render to be cancelled by simply closing the Command Prompt window and d) Doesn't require Blender to be open during rendering (aside from starting the render).
+
+I also know how to get it to work on Linux (though I haven't yet updated the add-on) with:
+
+```
+command = 'xterm -e ' + bpy.app.binary_path + ' -b ' + PathToBlend + ' -a'
+os.system(command)
+```
+
+But, what I can't seem to do is work out how to get it to work on Mac OSX. I thought this would work:
+
+```
+command = 'open -a /Applications/Utilities/Terminal.app ' + bpy.app.binary_path + ' --args PathToBlend'
+os.system(command)
+```
+
+I thought this would open the Terminal program, run Blender and then pass the arguments after `--args` to Blender, but the `--args` are always ignored. If anyone knows where I'm going wrong, please let me know.
