@@ -6,7 +6,7 @@
 
 ## Intro:
 
-Batch Render Tools is a series of tools to help doing batch renders of single or multiple files in Blender. Batch render tools can render many different files at once, each with their own frame ranges if desired (otherwise it uses the frame range in the target file). Simply add a batch job and browse to the desired blend file. Re-order the jobs if you want them rendered in a specific order (render happens from top to bottom).
+Batch Render Tools is a series of tools to help doing batch renders of single or multiple files in Blender. Batch render tools can render many different files at once, each with their own frame ranges if desired (otherwise it uses the frame range in the target file). Simply add a batch job and browse to the desired blend file, re-order the jobs if you want them rendered in a specific order (render happens from top to bottom) and then press 'Run batch render'. If you want, Blender can now be closed and the render will continue until either it is finished or the Command Prompt Window (which opens when rendering is started) is closed.
 
 If you have a folder of blends and want to quickly add them as jobs then you can use '**[Batch jobs from directory](#batchJobsFromDirectory)**' in the '*Additional Tools*' menu (shown below) to browse to a folder and generate the batch jobs. Alternatively, also from the '*Additional Tools*' menu, you can export the batch jobs as a Windows Batch file (.bat) using the '**[Generate .bat file](#generateBatFile)**' tool.
 
@@ -114,6 +114,22 @@ Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Edito
   
 ## <a name="compatibility">Compatibility
   
-Unfortunately, this add-on is Windows only. I don't like making things for only one OS, but this was more a script I made to help me during a production that I decided to polish and publish, as opposed to an add-on I specifically decided to make for the Blender community. I don't know of a more OS agnostic way of doing things at the moment (I've tried) and I don't have access to the other OSs to make the specific changes each OS would need.
+Unfortunately, this add-on is Windows only. I don't like making things for only one OS, but this was more a script I made to help me during a production that I decided to polish and publish, as opposed to an add-on I specifically decided to make for the Blender community.
   
-I'm currently using `os.system` to open a Command Prompt, which is the Windows specific part. The advantage of opening a command prompt over using something like `subprocess.call` is that it is a) Non-blocking, b) Shows feedback from Blender on the progress of the render, c) Allows the render to be cancelled by simply closing the Command Prompt window and d) Doesn't require Blender to be open during rendering (aside from starting the render). If someone knows of a more generic way to do this that will work for other OSs, I am open to hearing them.
+I'm currently using `os.system` to open a Command Prompt, which is the Windows specific part. The advantage of opening a command prompt over using something like `subprocess.call` is that it is a) Non-blocking, b) Shows feedback from Blender on the progress of the render, c) Allows the render to be cancelled by simply closing the Command Prompt window and d) Doesn't require Blender to be open during rendering (aside from starting the render).
+
+I also know how to get it to work on Linux (though I haven't yet updated the add-on) with:
+
+```
+command = 'xterm -e ' + bpy.app.binary_path + ' -b ' + PathToBlend + ' -a'
+os.system(command)
+```
+
+But, what I can't seem to do is work out how to get it to work on Mac OSX. This works:
+
+```
+command = 'open -a /Applications/Utilities/Terminal.app ' + bpy.app.binary_path'
+os.system(command)
+```
+
+It opens a Terminal and runs Blender, but I don't know how to pass additional arguments to Blender. If anyone knows how to do that, please let me know.
