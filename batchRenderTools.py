@@ -363,24 +363,26 @@ class BatchRenderToolsPanel(bpy.types.Panel):
             
             frames = 0
             for batchJob in context.scene.batch_render_tools.batch_jobs:
-                                
-                if batchJob.end == batchJob.start:
-                    
-                    frames += 1
-                    
-                else:           
-                    
-                    frameRange = batchJob.end - batchJob.start
                 
-                    if frameRange == context.scene.frame_step:
+                if batchJob.render:
+                                
+                    if batchJob.end == batchJob.start:
                         
-                        frames += 2
+                        frames += 1
                         
-                    else:
+                    else:           
                         
-                        frameRange += 1
-                        
-                        frames += math.ceil(frameRange / context.scene.frame_step)
+                        frameRange = batchJob.end - batchJob.start
+                    
+                        if frameRange == context.scene.frame_step:
+                            
+                            frames += 2
+                            
+                        else:
+                            
+                            frameRange += 1
+                            
+                            frames += math.ceil(frameRange / context.scene.frame_step)
             
             row = box.row()    
             row.label("Number of frames: "+str(frames), icon="IMAGE_DATA")
