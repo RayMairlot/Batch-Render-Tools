@@ -385,7 +385,7 @@ class BatchRenderToolsPanel(bpy.types.Panel):
                             frames += math.ceil(frameRange / context.scene.frame_step)
             
             row = box.row()    
-            row.label("Number of frames: "+str(frames), icon="IMAGE_DATA")
+            row.label("Number of frames to render: "+str(frames), icon="IMAGE_DATA")
         
         row = layout.row()
         row.label(text="Manage Batch Jobs:")
