@@ -59,15 +59,21 @@ class batchJobsPropertiesGroup(bpy.types.PropertyGroup):
 
     expanded = bpy.props.BoolProperty(default=True)
     
+    render_options_expanded = bpy.props.BoolProperty(default=False)
+    
     filepath = bpy.props.StringProperty(description="Location of the blend file to render", update=testValidBlend)
     
     frame_range_from_file = bpy.props.BoolProperty(default=False, name="Frame range from file", description="Use the frame range set in the file")
+
+    output_path_from_file = bpy.props.BoolProperty(default=True, name="Output path from file", description="Use the output path set in the file")
     
     name = bpy.props.StringProperty(description="Name of the render job")
     
     render = bpy.props.BoolProperty(default=True, description="Include this job when 'Run batch render' is pressed")
     
     valid_path = bpy.props.BoolProperty(default=False)
+    
+    output_filepath = bpy.props.StringProperty(description="Output filepath where renders will be saved", subtype="FILE_PATH")
         
 
 
@@ -138,6 +144,12 @@ def compileCommand():
         if not batchJob.frame_range_from_file:    
             
             frameRange = ' -s ' + str(batchJob.start) + ' -e ' + str(batchJob.end)
+            
+        outputPath = ""
+        
+        if not batchJob.output_path_from_file:    
+            
+            outputPath = ' -o ' + '"' + batchJob.output_filepath + '"'
         
         frameStep = ''
         
@@ -145,7 +157,7 @@ def compileCommand():
         
             frameStep = ' -j ' + str(bpy.context.scene.frame_step)
         
-        command += '"' + batchJob.filepath + '"' + frameRange + frameStep + ' -a ' 
+        command += '"' + batchJob.filepath + '"' + frameRange + outputPath + frameStep + ' -a ' 
 
     return command
 
@@ -435,14 +447,35 @@ class BatchRenderToolsPanel(bpy.types.Panel):
                     row = box.row()
                     row.label(text="Blend file doesn't exist", icon="ERROR")
                 
+                
                 row = box.row()
                 row.prop(batchJob, "frame_range_from_file")
-                            
+                                            
                 row = box.row(align=True)
                 row.enabled = not batchJob.frame_range_from_file
-                
+                                
                 row.prop(batchJob, "start")
                 row.prop(batchJob, "end")
+                
+                
+                box = box.box()
+                row = box.row()
+                
+                expandedIcon = "TRIA_RIGHT"
+                if batchJob.render_options_expanded:
+                    expandedIcon = "TRIA_DOWN"
+                row.prop(batchJob, "render_options_expanded", text="", emboss=False, icon=expandedIcon)
+                row.label("Render Options")
+                
+                if batchJob.render_options_expanded:
+                                    
+                    row = box.row()
+                    row.prop(batchJob, "output_path_from_file")
+                    
+                    row = box.row()
+                    row.enabled = not batchJob.output_path_from_file
+                      
+                    row.prop(batchJob, "output_filepath", text="Output")
             
             
 
