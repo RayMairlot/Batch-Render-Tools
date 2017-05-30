@@ -7,7 +7,7 @@ import math
 bl_info = {
     "name": "Batch Render Tools",
     "author": "Ray Mairlot",
-    "version": (0, 5),
+    "version": (0, 6, 0),
     "blender": (2, 77, 0),
     "location": "Properties > Render > Batch Render Tools",
     "description": "A series of tools to help with managing batch renders",
