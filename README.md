@@ -95,6 +95,15 @@ Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Edito
 + **End**
 
   If '[**Frame range from file**](#frameRangeFromFile) is disabled you can set which frame to rendering to.
+  
++ **Render Options**
+  
+  An expandable panel containing additional rendering options
+    
+    + **Output Path**
+    
+      Set the output path for the rendered image/animation per batch job.
+    
 
 ## Command Prompt Tools Options:
 
