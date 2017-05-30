@@ -102,7 +102,7 @@ Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Edito
     
     + <a name="outputPathFromFile"></a>**Output path from file**
     
-      Set the output path for the rendered image/animation per batch job.
+      Use the output file path set in the target file (specified by '[**Filepath**](#filepath)') for the rendered image/animation instead of specifying a custom one.
       
     + **Output filepath**
     
