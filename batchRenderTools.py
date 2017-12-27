@@ -109,10 +109,6 @@ class batchRenderToolsPropertiesGroup(bpy.types.PropertyGroup):
 ######################FUNCTIONS#################################################################################
 
 
-#def runLinuxCommand(command):
-
-
-
 
 def openCommandPrompt(context):
 
