@@ -2,6 +2,7 @@ import bpy
 import os
 from bpy_extras.io_utils import ImportHelper
 import math
+import platform
 
 
 bl_info = {
@@ -76,6 +77,14 @@ class batchJobsPropertiesGroup(bpy.types.PropertyGroup):
     output_filepath = bpy.props.StringProperty(description="Output filepath where renders will be saved", subtype="FILE_PATH")
         
 
+def availableLinuxTerminals():
+    terms = ["xterm", "gnome-terminal", "konsole", "aterm", "lxterminal"]
+    termsFound = []
+    for term in terms:
+        if os.system("which " + term) == 0:
+            termsFound.append((term, term, term + " terminal application"))
+    return termsFound
+    
 
 class batchRenderToolsPropertiesGroup(bpy.types.PropertyGroup):
 
@@ -88,10 +97,20 @@ class batchRenderToolsPropertiesGroup(bpy.types.PropertyGroup):
     hibernate = bpy.props.BoolProperty(default=False, name="Hibernate", description="Hibernate the computer after rendering (Windows only)")
     
     summary_expanded = bpy.props.BoolProperty(default=True)
-    
+
+    linux_terminal = bpy.props.EnumProperty(
+            name = "Linux terminal",
+            description = "Available Linux terminal applications",
+            items = availableLinuxTerminals()
+        )
+
     
 
 ######################FUNCTIONS#################################################################################
+
+
+#def runLinuxCommand(command):
+
 
 
 
@@ -101,7 +120,14 @@ def openCommandPrompt(context):
 
     binaryPath = binaryPath.replace('\\', '/' )
 
-    os.system("start cmd /K cd "+binaryPath)
+    if platform.system() == "Linux":
+        #os.system("xterm -e 'cd \""+binaryPath+"\" && $SHELL' &")
+        os.system(context.scene.batch_render_tools.linux_terminal + " &")
+    elif platform.system() == "Darwin":
+        #os.system("open -a Terminal.app")
+        os.system("osascript -e 'tell application \"Terminal\" to do script \"pwd\"'")
+    else:
+        os.system("start cmd /K cd "+binaryPath)
     
     if context.scene.batch_render_tools.copy_blendfile_path:
         
@@ -114,18 +140,24 @@ def openCommandPrompt(context):
         context.window_manager.clipboard = blenderCommand+'"'+bpy.data.filepath+'" '
         
         
-
 def runBatchRender(context):
                 
-    command = compileCommand()    
+    command = compileCommand()
     
     hibernate = ""
     if context.scene.batch_render_tools.hibernate and str(bpy.app.build_platform) == "b'Windows'":
         hibernate = " && shutdown -h"
     
     #Running the command directly requires an extra set of quotes around the command, batch does not
-    command = 'start cmd /k " "' + command + hibernate + '"'
-    command.replace('\\','/')
+    if platform.system() == "Linux":
+        command = context.scene.batch_render_tools.linux_terminal + " -e "+command+" -w"
+    elif platform.system() == "Darwin":
+        #os.system("open -a Terminal.app")
+        command = command.replace('"','\\"')
+        command = "osascript -e 'tell application \"Terminal\" to do script \"" + command + "\"'"
+    else:
+        command = 'start cmd /k " "' + command + hibernate + '"'
+        command.replace('\\','/')
     print(command)
     os.system(command)
                                                  
@@ -133,7 +165,7 @@ def runBatchRender(context):
 
 def compileCommand():
             
-    command = bpy.app.binary_path + '" -b '
+    command = '"' + bpy.app.binary_path + '" -b '
     
     batchJobs = [batchJob for batchJob in bpy.context.scene.batch_render_tools.batch_jobs if batchJob.render]
     
@@ -325,6 +357,9 @@ class CommandPromptToolsPanel(bpy.types.Panel):
         col = row.column()
         col.enabled = context.scene.batch_render_tools.copy_blendfile_path
         col.prop(context.scene.batch_render_tools, "background", text="Background")
+        if platform.system() == "Linux":
+            row = layout.row()
+            row.prop(context.scene.batch_render_tools, "linux_terminal")
     
 
 
@@ -684,7 +719,6 @@ class BatchJobExpandAllOperator(bpy.types.Operator):
     def execute(self, context):
         batchJobExpandAll(self, context)
         return {'FINISHED'}   
-    
     
                                         
 def register():
