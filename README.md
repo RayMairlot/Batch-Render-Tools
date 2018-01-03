@@ -1,6 +1,6 @@
 # Batch Render Tools
 
-**Note**: *Currently Windows only. More info [here](#compatibility).*
+**Note**: *Currently Windows only. An untested '[Linux and OSX Support](https://github.com/RayMairlot/Batch-Render-Tools/tree/Linux-and-OSX-Support)' branch is available. More info [here](#compatibility).*
 
 *Also, while I have used this add-on on very long renders without any problems, please be advised that you use this at your own risk. I suggest doing a short test render before anything big to make sure it works as you expect it to.*
 
@@ -126,9 +126,9 @@ Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Edito
   `blender -b "PATHTOBLEND" `
   
 ## <a name="compatibility">Compatibility
-  
-Unfortunately, this add-on is Windows only. I don't like making things for only one OS, but this was more a script I made to help me during a production that I decided to polish and publish, as opposed to an add-on I specifically decided to make for the Blender community.
-  
+ 
+Unfortunately, this add-on is Windows only (however, there is an untested '[Linux and OSX Support](https://github.com/RayMairlot/Batch-Render-Tools/tree/Linux-and-OSX-Support)' branch thanks to the contributions from [antoniochiurla](https://github.com/RayMairlot/Batch-Render-Tools/pull/2)). I don't like making things for only one OS, but this was more a script I made to help me during a production that I decided to polish and publish, as opposed to an add-on I specifically decided to make for the Blender community.
+
 I'm currently using `os.system` to open a Command Prompt, which is the Windows specific part. The advantage of opening a command prompt over using something like `subprocess.call` is that it is a) Non-blocking, b) Shows feedback from Blender on the progress of the render, c) Allows the render to be cancelled by simply closing the Command Prompt window and d) Doesn't require Blender to be open during rendering (aside from starting the render).
 
 I also know how to get it to work on Linux (though I haven't yet updated the add-on) with:
