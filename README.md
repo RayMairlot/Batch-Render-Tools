@@ -1,6 +1,6 @@
 # Batch Render Tools
 
-**Note**: *Currently Windows only. More info [here](#compatibility).*
+**Note**: *This is the untested 'Linux and OSX Support' branch. More info [here](https://github.com/RayMairlot/Batch-Render-Tools/issues/1).*
 
 *Also, while I have used this add-on on very long renders without any problems, please be advised that you use this at your own risk. I suggest doing a short test render before anything big to make sure it works as you expect it to.*
 
