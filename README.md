@@ -1,6 +1,6 @@
 # Batch Render Tools
 
-**Note**: *Currently Windows only. An untested '[Linux and OSX Support](https://github.com/RayMairlot/Batch-Render-Tools/tree/Linux-and-OSX-Support)' branch is available. More info [here](#compatibility).*
+**Note**: *Currently Windows only. An untested '[Linux and OSX Support](https://github.com/RayMairlot/Batch-Render-Tools/tree/Linux-and-OSX-Support)' branch is available. More info [here](https://github.com/RayMairlot/Batch-Render-Tools/issues/1).*
 
 *Also, while I have used this add-on on very long renders without any problems, please be advised that you use this at your own risk. I suggest doing a short test render before anything big to make sure it works as you expect it to.*
 
@@ -124,25 +124,3 @@ Enabling the add-on adds two panels to the 'Render' tab of the 'Properties Edito
   If '[**Copy path**](#copyPath)' is enabled then the background option can be enabled which will mean blender's background command (`blender -b`) will also be copied to the clipboard. E.g. with this option enabled you will be able to paste this into the newly opened command prompt:
   
   `blender -b "PATHTOBLEND" `
-  
-## <a name="compatibility">Compatibility
- 
-Unfortunately, this add-on is Windows only (however, there is an untested '[Linux and OSX Support](https://github.com/RayMairlot/Batch-Render-Tools/tree/Linux-and-OSX-Support)' branch thanks to the contributions from [antoniochiurla](https://github.com/RayMairlot/Batch-Render-Tools/pull/2)). I don't like making things for only one OS, but this was more a script I made to help me during a production that I decided to polish and publish, as opposed to an add-on I specifically decided to make for the Blender community.
-
-I'm currently using `os.system` to open a Command Prompt, which is the Windows specific part. The advantage of opening a command prompt over using something like `subprocess.call` is that it is a) Non-blocking, b) Shows feedback from Blender on the progress of the render, c) Allows the render to be cancelled by simply closing the Command Prompt window and d) Doesn't require Blender to be open during rendering (aside from starting the render).
-
-I also know how to get it to work on Linux (though I haven't yet updated the add-on) with:
-
-```
-command = 'xterm -e ' + bpy.app.binary_path + ' -b ' + PathToBlend + ' -a'
-os.system(command)
-```
-
-But, what I can't seem to do is work out how to get it to work on Mac OSX. This works:
-
-```
-command = 'open -a /Applications/Utilities/Terminal.app ' + bpy.app.binary_path'
-os.system(command)
-```
-
-It opens a Terminal and runs Blender, but I don't know how to pass additional arguments to Blender. If anyone knows how to do that, please let me know.
